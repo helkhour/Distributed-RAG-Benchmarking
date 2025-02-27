@@ -27,7 +27,7 @@ def get_embedding(text):
 
 # Initialize FAISS index
 d = 384  # MiniLM-L6-v2 produces 384-dimensional embeddings
-index = faiss.IndexFlatL2(d)
+index = faiss.IndexFlatL2(d)      #    L2 distance (Euclidean distance) to compare vectors
 file_mapping = {}
 
 # Clone the GitHub repository (if not already cloned)
