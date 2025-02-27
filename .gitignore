@@ -1,0 +1,52 @@
+# Virtual Environments
+/rag_envrag_env/
+/rag_env/
+venv/
+env/
+*.venv
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs and temporary files
+*.log
+logs/
+*.out
+
+findings/byzfl_repo
+*.err
+*.tmp
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.sublime-workspace
+
+# FAISS index files
+*.faiss
+
+# Machine Learning model files
+*.h5
+*.pt
+*.pkl
+*.onnx
+
+# Data files
+*.csv
+*.json
+*.db
+*.sqlite
+*.npy
+*.npz
+
+# System files (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Git
+.gitignore
