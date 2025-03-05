@@ -48,21 +48,32 @@ def get_code_files(repo_path):
                 file_paths.append(os.path.join(root, file))
     return file_paths
 
+
+
 def load_code_content(file_paths):
-    """Load content from each file and return as text list."""
     texts = []
+    total_size = 0
     for file_path in file_paths:
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
                 texts.append(content)
-                file_mapping[len(texts) - 1] = file_path  # Store file index mapping
+                total_size += len(content)
+                file_mapping[len(texts) - 1] = file_path
         except Exception as e:
             print(f"Skipping {file_path}: {e}")
+    print(f"📄 Loaded {len(texts)} files, Total text size: {total_size / 1e6:.2f} MB")
     return texts
 
 code_files = get_code_files(LOCAL_REPO_PATH)
 documents = load_code_content(code_files)
+
+def add_to_database(texts):
+    embeddings = np.vstack([get_embedding(text) for text in texts])
+    index.add(embeddings)
+    print(f"📌 Indexed {index.ntotal} documents, FAISS size: {index.ntotal * d * 4 / 1e6:.2f} MB")
+
+
 
 # Add embeddings to FAISS index
 def add_to_database(texts):
