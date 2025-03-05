@@ -30,6 +30,8 @@ def add_to_database(texts):
     """Add documents to FAISS database."""
     embeddings = np.vstack([get_embedding(text) for text in texts])
     index.add(embeddings)
+    print(f"📌 Indexed {index.ntotal} documents, Total FAISS size: {index.ntotal * d * 4 / 1e6:.2f} MB")
+
 
 def query_database(query, k=5):
     """Retrieve top-k results from FAISS index."""
