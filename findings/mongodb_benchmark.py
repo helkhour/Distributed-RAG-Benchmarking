@@ -53,11 +53,13 @@ def generate_embeddings(code_files: list[dict]) -> list[dict]:
     documents = []
     for file in code_files:
         chunks = chunk_content(file["content"])
+        file_size = len(file["content"])  # Measure file size in characters
         for i, chunk in enumerate(chunks):
             embedding = model.encode(chunk).tolist()  # Convert NumPy array to list
             documents.append({
                 "path": file["path"],
                 "filename": file["filename"],
+                "size": file_size,  # Include size
                 "chunk_id": i,
                 "content": chunk,
                 "embedding": embedding  # Ensure this matches the MongoDB vector index
@@ -65,8 +67,15 @@ def generate_embeddings(code_files: list[dict]) -> list[dict]:
     return documents
 
 def store_documents(documents: list[dict]) -> None:
-    """Store documents with embeddings in MongoDB."""
-    requests = [ReplaceOne({"path": doc["path"], "chunk_id": doc["chunk_id"]}, doc, upsert=True) for doc in documents]
+    """Store documents with embeddings and metadata in MongoDB."""
+    requests = [
+        ReplaceOne(
+            {"path": doc["path"], "chunk_id": doc["chunk_id"]},  # Unique identifier
+            doc,  
+            upsert=True
+        ) 
+        for doc in documents
+    ]
     if requests:
         result = collection.bulk_write(requests)
         print(f"Stored {result.upserted_count} new documents, modified {result.modified_count} existing documents.")
@@ -79,19 +88,23 @@ def vector_search(query: str, k: int = 5) -> list[dict]:
     pipeline = [
         {
             "$vectorSearch": {
-                "index": "vector_index",  # Ensure this matches the UI-assigned name
-                "path": "embedding",  # Matches the indexed field
+                "index": "vector_index",
+                "path": "embedding",
                 "queryVector": query_embedding,
-                "numCandidates": 100,  # Recommended tuning parameter
+                "numCandidates": 100,
                 "limit": k
             }
         },
         {
             "$project": {
                 "filename": 1,
+                "size": 1,  # Include size in results
                 "content": 1,
                 "score": {"$meta": "vectorSearchScore"}
             }
+        },
+        {
+            "$sort": {"size": -1}  # Sort by document size (descending)
         }
     ]
 
