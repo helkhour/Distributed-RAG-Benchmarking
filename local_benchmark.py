@@ -11,10 +11,10 @@ import psutil  # For disk I/O
 import concurrent.futures  # For concurrency testing
 import statistics
 
-# MongoDB Atlas connection
+# MongoDB local connection
 REPO_DIR = "byzfl_repo"
-client = pymongo.MongoClient("mongodb+srv://helenlkhoury:PpMIpywcSCsxqb2n@rag.kpcg2.mongodb.net/?retryWrites=true&w=majority&appName=RAG")
-db = client.byzfl_db  
+client = pymongo.MongoClient("mongodb://localhost:27017/")  # Default local MongoDB connection
+db = client.byzfl_db  # Local database name
 collection = db.code_chunks 
 
 # Load Sentence Transformer Model
@@ -95,50 +95,53 @@ def store_documents(documents: list[dict]) -> None:
     disk_write = (final_write_bytes - initial_write_bytes) / 1024 / 1024  # MB
     data_size = len(json.dumps(documents)) / 1024 / 1024  # MB
     
-    # Use collStats command to get index size (may require admin privileges)
-    try:
-        stats = db.command("collStats", "code_chunks")
-        index_size = stats.get("totalIndexSize", 0) / 1024 / 1024  # Convert bytes to MB
-    except pymongo.errors.OperationFailure:
-        index_size = "Unknown (requires admin privileges or Atlas API)"
+    # Get index size from local MongoDB
+    stats = db.command("collStats", "code_chunks")
+    index_size = stats.get("totalIndexSize", 0) / 1024 / 1024  # Convert bytes to MB
     
     print(f"Write Latency: {write_latency:.2f} seconds")
     print(f"Disk I/O - Read: {disk_read:.2f} MB, Write: {disk_write:.2f} MB")
     print(f"Data Size: {data_size:.2f} MB")
     print(f"Index Size: {index_size} MB")
 
-# 6️⃣ Vector Search with Search Latency, Network Latency, and Query Overhead
+# 6️⃣ Vector Search with Search Latency and Query Overhead
 def vector_search(query: str, k: int = 5) -> list[dict]:
     overhead_start = time.time()
     query_embedding = model.encode(query).tolist()
     query_overhead = time.time() - overhead_start
     
     search_start = time.time()
-    pipeline = [
-        {
-            "$vectorSearch": {
-                "index": "vector_index",
-                "path": "embedding",
-                "queryVector": query_embedding,
-                "numCandidates": 100,
-                "limit": k
-            }
-        },
-        {"$project": {"filename": 1, "size": 1, "content": 1, "score": {"$meta": "vectorSearchScore"}}},
-        {"$sort": {"size": -1}}
-    ]
-    try:
-        results = list(collection.aggregate(pipeline))
-        search_latency = time.time() - search_start
-        network_latency = search_latency - query_overhead  # Simplified approximation
-        
-        print(f"Search Latency: {search_latency:.2f} seconds")
-        print(f"Network Latency (approx.): {network_latency:.2f} seconds")
-        print(f"Query Overhead: {query_overhead:.2f} seconds")
-        return results
-    except Exception as e:
-        print(f"Error executing vector search: {e}")
-        return []
+    # For local MongoDB, we'll use a simpler similarity search since $vectorSearch is Atlas-specific
+    results = collection.find(
+        {"embedding": {"$exists": True}}
+    ).sort([("size", -1)]).limit(k)
+    
+    # Calculate cosine similarity manually
+    def cosine_similarity(vec1, vec2):
+        dot_product = sum(a * b for a, b in zip(vec1, vec2))
+        norm1 = sum(a * a for a in vec1) ** 0.5
+        norm2 = sum(b * b for b in vec2) ** 0.5
+        return dot_product / (norm1 * norm2) if norm1 * norm2 != 0 else 0
+
+    scored_results = []
+    for doc in results:
+        similarity = cosine_similarity(query_embedding, doc["embedding"])
+        scored_results.append({
+            "filename": doc["filename"],
+            "size": doc["size"],
+            "content": doc["content"],
+            "score": similarity
+        })
+    
+    # Sort by similarity score and take top k
+    scored_results.sort(key=lambda x: x["score"], reverse=True)
+    final_results = scored_results[:k]
+    
+    search_latency = time.time() - search_start
+    
+    print(f"Search Latency: {search_latency:.2f} seconds")
+    print(f"Query Overhead: {query_overhead:.2f} seconds")
+    return final_results
 
 # 7️⃣ RAG Query
 def rag_query(query: str, k: int = 5) -> str:
@@ -185,13 +188,9 @@ if __name__ == "__main__":
     collection.drop()
     print("Dropped existing 'code_chunks' collection (if it existed).")
 
-    # Step 2: Assume vector index exists
-    print("\nAssuming 'vector_index' is active in Atlas Search. If not, create it with:")
-    print(json.dumps({
-        "fields": [{"numDimensions": 384, "path": "embedding", "similarity": "cosine", "type": "vector"}]
-    }, indent=2))
-    print("Waiting 30 seconds for manual index confirmation...")
-    time.sleep(30)
+    # Step 2: Create index for local MongoDB (simpler index since vector search is manual)
+    collection.create_index([("path", 1), ("chunk_id", 1)])
+    print("\nCreated basic index on 'path' and 'chunk_id' for local MongoDB.")
 
     # Step 3: Clone, process, and populate
     clone_repository("https://github.com/LPD-EPFL/byzfl.git", REPO_DIR)
