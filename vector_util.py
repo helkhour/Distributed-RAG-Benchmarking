@@ -3,11 +3,14 @@ from sentence_transformers import SentenceTransformer
 from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 from config import MODEL_NAME, EMBEDDING_SIZE, DB_URI, DB_NAME, COLLECTION_NAME
+import time
 
 model = SentenceTransformer(MODEL_NAME)
 
 def generate_embedding(text):
     return model.encode(text).tolist()
+
+import time
 
 def setup_vector_index():
     try:
@@ -20,6 +23,14 @@ def setup_vector_index():
         db = client[DB_NAME]
         collection = db[COLLECTION_NAME]
         
+        # Drop the existing vector index if it exists
+        indexes = list(collection.list_search_indexes())
+        for index in indexes:
+            if index["name"] == "vector_index":
+                collection.drop_search_index(index["name"])
+                print("Existing 'vector_index' dropped.")
+
+        # Create the new vector index
         collection.create_search_index({
             "name": "vector_index",
             "definition": {
@@ -35,13 +46,28 @@ def setup_vector_index():
                 }
             }
         })
+
+        # Wait for the index to become ready
+        print("Waiting for vector index to be ready...")
+        start_time = time.time()
+        timeout = 300  # Timeout after 5 minutes (in seconds)
         
-        indexes = list(collection.list_search_indexes())
-        if any(index["name"] == "vector_index" for index in indexes):
-            print("Vector index created successfully!")
-        else:
-            print("Warning: Vector index not found.")
-        
+        while True:
+            indexes = list(collection.list_search_indexes())
+            vector_index = next((index for index in indexes if index["name"] == "vector_index"), None)
+            
+            if vector_index and vector_index.get("state") == "READY":
+                print("Vector index is now ready!")
+                break
+
+            # Check timeout
+            if time.time() - start_time > timeout:
+                print("Timeout reached. The index is not ready yet.")
+                break
+            
+            # Sleep for 1 second before checking again
+            time.sleep(1)
+
         return collection
     except ServerSelectionTimeoutError as e:
         print(f"Connection error: {e}")

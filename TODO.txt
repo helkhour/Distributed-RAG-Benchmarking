@@ -1,0 +1,8 @@
+end-to-end latency
+throughput
+embedding time between models : LM vs all-mpnet-base-v2 which has bigger context size
+
+vector index optimization 
+try with new numCandidates number ! "numCandidates": K * 100 instead of 10 
+
+mutable data 
