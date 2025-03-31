@@ -1,18 +1,26 @@
 # retrieval.py
-from pymongo import MongoClient
-from config import DB_URI, DB_NAME, COLLECTION_NAME, K
+from config import K
 
 def retrieve_top_k(query_embedding, collection):
-    """Retrieve top k documents based on vector similarity."""
+    """Retrieve top K documents based on vector similarity."""
     results = collection.aggregate([
         {
             "$vectorSearch": {
-                "index": "vector_index",
-                "path": "embedding",
                 "queryVector": query_embedding,
-                "limit": K
+                "path": "embedding",
+                "index": "vector_index",
+                "limit": K,  # Top K results (e.g., 5)
+                "numCandidates": K * 10  # Consider 10x the limit as candidates (e.g., 50)
             }
         },
-        {"$project": {"text": 1, "_id": 0}}  # Return only the document text
+        {
+            "$project": {
+                "_id": 0,
+                "text": 1,
+                "question_id": 1,
+                "source": 1
+            }
+        }
     ])
+    
     return list(results)
