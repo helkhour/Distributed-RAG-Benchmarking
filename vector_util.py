@@ -10,7 +10,6 @@ model = SentenceTransformer(MODEL_NAME)
 def generate_embedding(text):
     return model.encode(text).tolist()
 
-import time
 
 def setup_vector_index():
     try:
@@ -51,24 +50,24 @@ def setup_vector_index():
         print("Waiting for vector index to be ready...")
         start_time = time.time()
         timeout = 300  # Timeout after 5 minutes (in seconds)
-        
+    
         while True:
-            indexes = list(collection.list_search_indexes())
+            indexes = list(collection.list_search_indexes())            
+            # Find the vector_index
             vector_index = next((index for index in indexes if index["name"] == "vector_index"), None)
-            
-            if vector_index and vector_index.get("state") == "READY":
-                print("Vector index is now ready!")
-                break
 
-            # Check timeout
-            if time.time() - start_time > timeout:
-                print("Timeout reached. The index is not ready yet.")
-                break
-            
+            if vector_index:                
+                if vector_index.get("status") == "READY":
+                    print("Vector index is now ready!")
+                    break
+                else:
+                    print(f"Index is not ready yet. Current state: {vector_index.get('status')}")
+            else:
+                print("No vector index found.")
             # Sleep for 1 second before checking again
             time.sleep(1)
-
         return collection
+    
     except ServerSelectionTimeoutError as e:
         print(f"Connection error: {e}")
         print("Ensure MongoDB is running in Docker and accessible at", DB_URI)

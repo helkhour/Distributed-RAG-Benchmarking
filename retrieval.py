@@ -10,7 +10,7 @@ def retrieve_top_k(query_embedding, collection):
                 "path": "embedding",
                 "index": "vector_index",
                 "limit": K,  # Top K results (e.g., 5)
-                "numCandidates": K * 10  # Consider 10x the limit as candidates (e.g., 50)
+                "numCandidates": K * 100  # Consider 10x the limit as candidates (e.g., 50)
             }
         },
         {

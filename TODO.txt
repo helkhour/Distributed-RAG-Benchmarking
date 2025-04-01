@@ -3,6 +3,9 @@ throughput
 embedding time between models : LM vs all-mpnet-base-v2 which has bigger context size
 
 vector index optimization 
-try with new numCandidates number ! "numCandidates": K * 100 instead of 10 
+try with new numCandidates number ! "numCandidates": K * 100 instead of 10 DONE
 
 mutable data 
+
+
+Waiting for vector index to be ready... : this is too slow !! Whats wrong with index ? DONE 

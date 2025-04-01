@@ -4,7 +4,7 @@ from vector_util import generate_embedding, setup_vector_index
 from config import DATASET_NAME, SUBSET_NAME, DB_URI, DB_NAME, COLLECTION_NAME
 
 
-def load_and_store_test_data(limit=None):
+def load_and_store_test_data(limit):
     """Load HotpotQA test data and store documents in MongoDB."""
     # Load full test split
     if limit is None:

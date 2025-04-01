@@ -2,6 +2,7 @@
 from data_loader import load_and_store_test_data
 from vector_util import generate_embedding
 from retrieval import retrieve_top_k
+import time 
 
 def evaluate_retrieval_performance(dataset_test, collection):
     """Calculate retrieval success, average precision, and database size."""
@@ -48,7 +49,7 @@ def evaluate_retrieval_performance(dataset_test, collection):
 
 def main():
     # Load test data and store in MongoDB
-    collection, dataset_test = load_and_store_test_data()
+    collection, dataset_test = load_and_store_test_data(limit=None)
     
     # Evaluate retrieval performance
     evaluate_retrieval_performance(dataset_test, collection)
