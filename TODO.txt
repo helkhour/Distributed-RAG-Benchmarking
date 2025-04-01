@@ -14,3 +14,32 @@ Waiting for vector index to be ready... : this is too slow !! Whats wrong with i
 
 
 My end goal is to figure out how many concurrent users could be supported before I'd need to scale up the instance size? 
+
+
+I wanna see how many queries my system supports. So I wanna perform multiple parallel queries. 
+
+from concurrent.futures import ThreadPoolExecutor
+def evaluate_concurrent(dataset, collection, embedding_generator):
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(process_query, entry, collection, embedding_generator) for entry in dataset]
+        results = [f.result() for f in futures]
+
+
+
+I wanna see how my system can deal with dynamic data. So, how does it update etc. 
+
+
+I wanna show the difference between multiple embedding models. 
+models = ["all-mpnet-base-v2", "all-MiniLM-L6-v2"]
+for model_name in models:
+    embedding_generator = EmbeddingGenerator(model_name)
+
+
+More metrics ? 
+metrics["recall"] = total_relevant / total_possible_relevant if total_possible_relevant > 0 else 0
+metrics["f1"] = 2 * (avg_precision * recall) / (avg_precision + recall) if (avg_precision + recall) > 0 else 0
+
+
+
+
+to connect : atlas deployments connect local1443 ?

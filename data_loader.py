@@ -1,17 +1,25 @@
+# data_loader.py
 from datasets import load_dataset
-from vector_util import EmbeddingGenerator, setup_vector_index
-from db_utils import MongoDBClient
-from config import DATASET_CONFIG
+import time
+from config import DATASET_NAME, SUBSET_NAME
+from db_utils import get_db_connection, setup_vector_index
 
-def load_dataset(name=DATASET_CONFIG["name"], subset=DATASET_CONFIG["subset"], split="test", limit=None):
-    split_str = f"{split}[:{limit}]" if limit else split
-    return load_dataset(name, name=subset, split=split_str)
+def load_and_store_data(limit=None, embedding_generator=None, embedding_size=None):
+    """Load dataset and store it in MongoDB with embeddings."""
+    if embedding_generator is None or embedding_size is None:        
+        raise ValueError("Embedding generator and size are required.")
+    # Load dataset
+    split = "test" if limit is None else f"test[:{limit}]"
+    dataset = load_dataset(DATASET_NAME, name=SUBSET_NAME, split=split)
 
-def store_documents(dataset, collection, embedding_generator):
-    collection.delete_many({})
+    # Connect to MongoDB
+    collection = get_db_connection()
+    collection.delete_many({})  # Clear existing data
+
+    # Time embedding and storage
+    start_time = time.time()
     for entry in dataset:
-        documents = entry["documents"]
-        for doc in documents:
+        for doc in entry["documents"]:
             embedding = embedding_generator.generate_embedding(doc)
             collection.insert_one({
                 "text": doc,
@@ -19,14 +27,11 @@ def store_documents(dataset, collection, embedding_generator):
                 "question_id": entry["id"],
                 "source": "test"
             })
-    setup_vector_index(collection)
+    embedding_storage_time = time.time() - start_time
+
+    # Setup vector index
+    setup_vector_index(collection, embedding_size)
+
     total_docs = collection.count_documents({})
     print(f"Stored {total_docs} documents in MongoDB.")
-
-def load_and_store_test_data(limit=None):
-    db_client = MongoDBClient()
-    collection = db_client.get_collection()
-    dataset = load_dataset(limit=limit)
-    embedding_generator = EmbeddingGenerator()
-    store_documents(dataset, collection, embedding_generator)
-    return collection, dataset
+    return collection, dataset, embedding_storage_time
