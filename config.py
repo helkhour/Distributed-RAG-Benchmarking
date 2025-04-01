@@ -1,9 +1,28 @@
-# config.py
-MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
-EMBEDDING_SIZE = 768
-DB_URI = "mongodb://localhost:32768/?directConnection=true"  # Adjust port when changing model !!
-DB_NAME = "rag_db"
-COLLECTION_NAME = "hotpotqa_docs"
-K = 3  # Top k results to retrieve
-DATASET_NAME = "rungalileo/ragbench"
-SUBSET_NAME = "hotpotqa"
+# Configuration settings for the RAG pipeline
+
+# Model settings
+MODEL_CONFIG = {
+    "name": "sentence-transformers/all-mpnet-base-v2",
+    "embedding_size": 768
+}
+
+# Database settings
+DB_CONFIG = {
+    "uri": "mongodb://localhost:32768/?directConnection=true",
+    "name": "rag_db",
+    "collection": "hotpotqa_docs",
+    "timeout_ms": 5000,
+    "index_timeout_s": 300
+}
+
+# Retrieval settings
+RETRIEVAL_CONFIG = {
+    "k": 3,  # Top k results
+    "candidate_multiplier": 100  # Multiplier for numCandidates
+}
+
+# Dataset settings
+DATASET_CONFIG = {
+    "name": "rungalileo/ragbench",
+    "subset": "hotpotqa"
+}

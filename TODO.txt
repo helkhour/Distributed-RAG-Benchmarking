@@ -9,3 +9,8 @@ mutable data
 
 
 Waiting for vector index to be ready... : this is too slow !! Whats wrong with index ? DONE 
+
+
+
+
+My end goal is to figure out how many concurrent users could be supported before I'd need to scale up the instance size? 
