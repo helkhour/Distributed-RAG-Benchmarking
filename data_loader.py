@@ -7,7 +7,7 @@ from db_utils import get_db_connection, setup_vector_index
 def load_and_store_data(limit=None, embedding_generator=None, embedding_size=None):
     """Load dataset and store it in MongoDB with embeddings."""
     if embedding_generator is None or embedding_size is None:        
-        raise ValueError("Embedding generator and size are required.")
+        raise ValueError("Error : Embedding generator and size are required.")
     # Load dataset
     split = "test" if limit is None else f"test[:{limit}]"
     dataset = load_dataset(DATASET_NAME, name=SUBSET_NAME, split=split)

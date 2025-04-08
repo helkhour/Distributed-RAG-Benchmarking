@@ -1,13 +1,5 @@
-from sentence_transformers import SentenceTransformer
 from config import MODEL_CONFIG, DB_CONFIG
 import time
-
-class EmbeddingGenerator:
-    def __init__(self, model_name=MODEL_CONFIG["name"]):
-        self.model = SentenceTransformer(model_name)
-
-    def generate_embedding(self, text):
-        return self.model.encode(text).tolist()
 
 def setup_vector_index(collection):
     try:

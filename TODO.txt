@@ -43,3 +43,9 @@ metrics["f1"] = 2 * (avg_precision * recall) / (avg_precision + recall) if (avg_
 
 
 to connect : atlas deployments connect local1443 ?
+
+
+focus this week on : 
+effect of embedding models and vary number of parameters in embedding model and size of output token
+effect of vector index on throughput
+

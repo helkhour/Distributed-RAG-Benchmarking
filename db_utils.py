@@ -44,7 +44,6 @@ def setup_vector_index(collection, embedding_size):
             }
         })
 
-        # Wait for index to be ready
         print("Waiting for vector index to be ready...")
         start_time = time.time()
         timeout = 300  # 5 minutes
@@ -54,7 +53,7 @@ def setup_vector_index(collection, embedding_size):
             if vector_index and vector_index.get("status") == "READY":
                 print("Vector index is now ready!")
                 return
-            time.sleep(1)
+            time.sleep(1)                                              # inefficient - need to find something else 
         raise TimeoutError("Vector index creation timed out.")
     except Exception as e:
         print(f"Error setting up vector index: {e}")
