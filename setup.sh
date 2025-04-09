@@ -30,7 +30,3 @@ newgrp docker
 
 
 
-
-# after that I just need to 
-# atlas deployments setup --type local
-# atlas deployments connect <deloyment_name>
