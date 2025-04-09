@@ -23,7 +23,12 @@ cd /home/ubuntu/rag_project
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-deactivate
+
+#Give rights for docker access 
+sudo usermod -aG docker ubuntu
+newgrp docker
+
+
 
 
 # after that I just need to 
