@@ -19,20 +19,24 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     evaluator.start_monitoring()
     hotpotqa_doc_count = sum(len(entry["documents"]) for entry in hotpotqa_dataset)
     hotpotqa_bytes = sum(len(doc.encode('utf-8')) for entry in hotpotqa_dataset for doc in entry["documents"])
-    hotpotqa_mb = hotpotqa_bytes / (1024 * 1024)  # Convert bytes to MB
+    hotpotqa_mb = hotpotqa_bytes / (1024 * 1024)
     
     pubmedqa_doc_count = sum(len(entry["documents"]) for entry in pubmedqa_dataset)
     pubmedqa_bytes = sum(len(doc.encode('utf-8')) for entry in pubmedqa_dataset for doc in entry["documents"])
-    pubmedqa_mb = pubmedqa_bytes / (1024 * 1024)  # Convert bytes to MB
+    pubmedqa_mb = pubmedqa_bytes / (1024 * 1024)
     
     combined_dataset = concatenate_datasets([hotpotqa_dataset, pubmedqa_dataset])
     total_doc_count = hotpotqa_doc_count + pubmedqa_doc_count
     total_mb = hotpotqa_mb + pubmedqa_mb
     
-    print(f"HotpotQA Test Split Size: {hotpotqa_doc_count} documents, {hotpotqa_mb:.2f} MB")
-    print(f"PubMedQA Test Split Size: {pubmedqa_doc_count} documents, {pubmedqa_mb:.2f} MB")
-    print(f"Combined Dataset Size: {total_doc_count} documents, {total_mb:.2f} MB")
+    print(f"HotpotQA Test Split Size: {hotpotqa_doc_count} docs, {hotpotqa_mb:.2f} MB")
+    print(f"PubMedQA Test Split Size: {pubmedqa_doc_count} docs, {pubmedqa_mb:.2f} MB")
+    print(f"Combined Dataset Size: {total_doc_count} docs, {total_mb:.2f} MB")
     
+    # Validate dataset structure
+    for i, entry in enumerate(combined_dataset):
+        if "documents" not in entry or not isinstance(entry["documents"], list):
+            print(f"Warning: Entry {i} missing or invalid 'documents' field")
     dataset_load_duration, _ = evaluator.end_monitoring("Dataset Load")
     
     collection = get_db_connection()
@@ -51,7 +55,6 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
             })
     embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding Generation")
     
-    # Batch insert documents
     evaluator.start_monitoring()
     collection.insert_many(docs)
     storage_duration, storage_cpu_delta = evaluator.end_monitoring("Storage")

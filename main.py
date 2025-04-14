@@ -4,6 +4,7 @@ from evaluation import evaluate_retrieval_performance
 from embedding_utils import EmbeddingGenerator
 from config import MODEL_CONFIGS
 from system_evaluation import SystemEvaluator
+import psutil
 
 def run_study(model_name, embedding_size):
     evaluator = SystemEvaluator()
@@ -16,16 +17,17 @@ def run_study(model_name, embedding_size):
     collection, dataset, embedding_storage_time = load_and_store_data(
         limit=None, embedding_generator=embedding_generator, embedding_size=embedding_size
     )
-    data_duration, data_cpu_delta = evaluator.end_monitoring("Data Load")
-    evaluator.log_resources("After Data Load")
+    evaluator.end_monitoring("Data Load")
     
-    print("\nRunning sequential evaluation...")
+    print("\nRunning evaluation...")
     evaluator.start_monitoring()
     sequential_metrics = evaluate_retrieval_performance(
         dataset, collection, embedding_generator, max_workers=1
     )
-    eval_duration, eval_cpu_delta = evaluator.end_monitoring("Evaluation")
-    evaluator.log_resources("After Evaluation")
+    # sequential_metrics = evaluate_retrieval_performance(
+    #     dataset, collection, embedding_generator, max_workers=min(4, psutil.cpu_count())
+    # )
+    evaluator.end_monitoring("Evaluation")
     
     return embedding_storage_time, sequential_metrics
 
@@ -49,15 +51,15 @@ def summarize_results(model_name, embedding_time, sequential_metrics):
 def main():
     print("Starting RAG evaluation...")
     models = [
-        "mixedbread-ai/mxbai-embed-large-v1-256",
-        "mixedbread-ai/mxbai-embed-large-v1-512",
-        "mixedbread-ai/mxbai-embed-large-v1-1024",
+        # "mixedbread-ai/mxbai-embed-large-v1-256",
+        # "mixedbread-ai/mxbai-embed-large-v1-512",
+        # "mixedbread-ai/mxbai-embed-large-v1-1024",
         "sentence-transformers/all-MiniLM-L6-v2",
-        "intfloat/e5-small-v2",
-        "thenlper/gte-base-384",
-        "sentence-transformers/all-mpnet-base-v2",
-        "BAAI/bge-base-en-v1.5",
-        "thenlper/gte-base"
+        # "intfloat/e5-small-v2",
+        # "thenlper/gte-base-384",
+        # "sentence-transformers/all-mpnet-base-v2",
+        # "BAAI/bge-base-en-v1.5",
+        # "thenlper/gte-base"
     ]
 
     for model_name in models:

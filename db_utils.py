@@ -8,7 +8,7 @@ def get_db_connection():
     """Establish and return a MongoDB collection connection."""
     try:
         client = MongoClient(DB_URI, serverSelectionTimeoutMS=5000)
-        client.admin.command('ping')  # Test connection
+        client.admin.command('ping')
         print("Connected to MongoDB successfully!")
         db = client[DB_NAME]
         return db[COLLECTION_NAME]
@@ -20,14 +20,12 @@ def get_db_connection():
 def setup_vector_index(collection, embedding_size):
     """Create or update the vector index for the collection."""
     try:
-        # Drop existing vector index if it exists
         indexes = list(collection.list_search_indexes())
         for index in indexes:
             if index["name"] == "vector_index":
                 collection.drop_search_index(index["name"])
                 print("Existing 'vector_index' dropped.")
 
-        # Create new vector index
         collection.create_search_index({
             "name": "vector_index",
             "definition": {
@@ -46,14 +44,17 @@ def setup_vector_index(collection, embedding_size):
 
         print("Waiting for vector index to be ready...")
         start_time = time.time()
-        timeout = 300  # 5 minutes
+        timeout = 60  # Reduced timeout
+        interval = 0.5
+        attempt = 0
         while time.time() - start_time < timeout:
             indexes = list(collection.list_search_indexes())
             vector_index = next((idx for idx in indexes if idx["name"] == "vector_index"), None)
             if vector_index and vector_index.get("status") == "READY":
                 print("Vector index is now ready!")
                 return
-            time.sleep(1)                                              # inefficient - need to find something else 
+            time.sleep(interval * (1.5 ** attempt))  # Exponential backoff
+            attempt += 1
         raise TimeoutError("Vector index creation timed out.")
     except Exception as e:
         print(f"Error setting up vector index: {e}")

@@ -1,5 +1,5 @@
 # retrieval.py
-from config import K
+from config import K, NUM_CANDIDATES
 from system_evaluation import SystemEvaluator
 
 LOG_LIMIT = 4
@@ -10,7 +10,6 @@ def retrieve_top_k(query_embedding, collection):
     global log_counter
     evaluator = SystemEvaluator()
 
-    # Log only for first LOG_LIMIT queries
     if log_counter < LOG_LIMIT:
         evaluator.log_resources(f"Before Retrieval {log_counter + 1}")
     
@@ -21,7 +20,7 @@ def retrieve_top_k(query_embedding, collection):
                 "path": "embedding",
                 "index": "vector_index",
                 "limit": K,
-                "numCandidates": K * 100
+                "numCandidates": NUM_CANDIDATES
             }
         },
         {
