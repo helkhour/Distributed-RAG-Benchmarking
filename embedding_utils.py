@@ -12,11 +12,13 @@ class EmbeddingGenerator:
         if "Llama-3.1" in model_name:
             self.tokenizer = AutoTokenizer.from_pretrained(
                 base_model,
+                token= "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",
                 cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
-                use_auth_token=True
+                use_auth_token=True,
             )
             self.model = AutoModelForCausalLM.from_pretrained(
                 base_model,
+                token= "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",
                 cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
                 torch_dtype=torch.float16,
                 device_map="auto",
