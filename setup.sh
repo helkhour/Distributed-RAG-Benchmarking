@@ -1,6 +1,13 @@
 #!/bin/bash
+
+# Update package lists
 sudo apt-get update
-sudo apt-get install -y gnupg curl ca-certificates python3-venv
+sudo apt-get install -y gnupg curl ca-certificates python3-venv build-essential
+
+# Required for PyTorch to use T4 GPU on G4dn.xlarge
+sudo apt-get install -y ubuntu-drivers-common
+sudo ubuntu-drivers autoinstall
+sudo apt-get install -y nvidia-driver-535 nvidia-utils-535
 
 # MongoDB Atlas CLI
 curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
@@ -8,7 +15,7 @@ echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gp
 sudo apt-get update
 sudo apt-get install -y mongodb-atlas-cli
 
-# Docker
+# Docker (for MongoDB Atlas local deployment)
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -y $pkg; done
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -22,11 +29,10 @@ sudo usermod -aG docker ubuntu
 cd /home/ubuntu/rag_project
 python3 -m venv venv
 source venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
+deactivate
 
-#Give rights for docker access 
-sudo usermod -aG docker ubuntu
-newgrp docker
-
-
-
+# Clean up
+sudo apt-get autoremove -y
+sudo apt-get clean

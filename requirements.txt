@@ -1,4 +1,13 @@
-pymongo
-sentence-transformers
-datasets
-psutil
+sentence-transformers>=2.7.0
+datasets>=2.20.0
+pymongo>=4.8.0
+psutil>=6.0.0
+torch>=2.0.1
+transformers>=4.42.0
+bitsandbytes>=0.43.1
+accelerate>=0.33.0
+huggingface_hub>=0.23.4
+numpy==1.26.4
+tqdm==4.66.5
+psutil==6.0.0
+bitsandbytes==0.43.3

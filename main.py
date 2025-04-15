@@ -1,10 +1,8 @@
-# main.py
 from data_loader import load_and_store_data
 from evaluation import evaluate_retrieval_performance
 from embedding_utils import EmbeddingGenerator
 from config import MODEL_CONFIGS
 from system_evaluation import SystemEvaluator
-import psutil
 
 def run_study(model_name, embedding_size):
     evaluator = SystemEvaluator()
@@ -24,9 +22,6 @@ def run_study(model_name, embedding_size):
     sequential_metrics = evaluate_retrieval_performance(
         dataset, collection, embedding_generator, max_workers=1
     )
-    # sequential_metrics = evaluate_retrieval_performance(
-    #     dataset, collection, embedding_generator, max_workers=min(4, psutil.cpu_count())
-    # )
     evaluator.end_monitoring("Evaluation")
     
     return embedding_storage_time, sequential_metrics
@@ -51,15 +46,8 @@ def summarize_results(model_name, embedding_time, sequential_metrics):
 def main():
     print("Starting RAG evaluation...")
     models = [
-        # "mixedbread-ai/mxbai-embed-large-v1-256",
-        # "mixedbread-ai/mxbai-embed-large-v1-512",
-        # "mixedbread-ai/mxbai-embed-large-v1-1024",
-        "sentence-transformers/all-MiniLM-L6-v2",
-        # "intfloat/e5-small-v2",
-        # "thenlper/gte-base-384",
-        # "sentence-transformers/all-mpnet-base-v2",
-        # "BAAI/bge-base-en-v1.5",
-        # "thenlper/gte-base"
+        #"sentence-transformers/all-MiniLM-L6-v2",
+        "meta-llama/Meta-Llama-3.1-8B"
     ]
 
     for model_name in models:
