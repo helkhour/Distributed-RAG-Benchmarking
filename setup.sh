@@ -26,6 +26,8 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker ubuntu
 
+pip install bitsandbytes
+
 # Python
 cd /home/ubuntu/rag_project
 # Ensure python3 is valid
