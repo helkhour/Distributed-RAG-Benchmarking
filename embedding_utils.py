@@ -1,6 +1,6 @@
 # embedding_utils.py
 from sentence_transformers import SentenceTransformer
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 import torch
 import torch.nn as nn
 from config import MODEL_CONFIGS
@@ -10,19 +10,33 @@ class EmbeddingGenerator:
         self.device = device
         base_model = MODEL_CONFIGS[model_name].get("base_model", model_name)
         if "Llama-3.1" in model_name:
-            self.tokenizer = AutoTokenizer.from_pretrained(
-                base_model,
-                cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
-                use_auth_token=True,
-            )
-            self.model = AutoModelForCausalLM.from_pretrained(
-                base_model,
-                cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
-                torch_dtype=torch.float16,
-                device_map="auto",
-                use_auth_token=True
-            )
-            self.model.eval()
+            try:
+                self.tokenizer = AutoTokenizer.from_pretrained(
+                    base_model,
+                    cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
+                    token=True
+                )
+                # Set pad_token to eos_token
+                self.tokenizer.pad_token = self.tokenizer.eos_token
+                # Enable 4-bit quantization
+                quantization_config = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_compute_dtype=torch.float16,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_use_double_quant=True
+                )
+                self.model = AutoModelForCausalLM.from_pretrained(
+                    base_model,
+                    quantization_config=quantization_config,
+                    cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
+                    torch_dtype=torch.float16,
+                    device_map="auto",
+                    token=True
+                )
+                self.model.eval()
+            except Exception as e:
+                print(f"Error loading Llama-3.1 model: {e}")
+                raise
         else:
             self.model = SentenceTransformer(base_model)
         self.model_name = model_name
