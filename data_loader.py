@@ -1,11 +1,16 @@
-# data_loader.py
 from datasets import load_dataset, concatenate_datasets
 from config import DATASET_NAME, SUBSET_NAME
 from db_utils import get_db_connection, setup_vector_index
 from system_evaluation import SystemEvaluator
+from tqdm import tqdm
+import logging
+import torch
 
 def load_and_store_data(limit=None, embedding_generator=None, embedding_size=None):
     """Load hotpotqa and pubmedqa test splits, store in MongoDB with embeddings."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+    logger = logging.getLogger(__name__)
+    
     evaluator = SystemEvaluator()
     if embedding_generator is None or embedding_size is None:
         raise ValueError("Error: Embedding generator and size are required.")
@@ -29,44 +34,58 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     total_doc_count = hotpotqa_doc_count + pubmedqa_doc_count
     total_mb = hotpotqa_mb + pubmedqa_mb
     
-    print(f"HotpotQA Test Split Size: {hotpotqa_doc_count} docs, {hotpotqa_mb:.2f} MB")
-    print(f"PubMedQA Test Split Size: {pubmedqa_doc_count} docs, {pubmedqa_mb:.2f} MB")
-    print(f"Combined Dataset Size: {total_doc_count} docs, {total_mb:.2f} MB")
+    logger.info(f"HotpotQA Test Split Size: {hotpotqa_doc_count} docs, {hotpotqa_mb:.2f} MB")
+    logger.info(f"PubMedQA Test Split Size: {pubmedqa_doc_count} docs, {pubmedqa_mb:.2f} MB")
+    logger.info(f"Combined Dataset Size: {total_doc_count} docs, {total_mb:.2f} MB")
     
     # Validate dataset structure
     for i, entry in enumerate(combined_dataset):
         if "documents" not in entry or not isinstance(entry["documents"], list):
-            print(f"Warning: Entry {i} missing or invalid 'documents' field")
+            logger.warning(f"Entry {i} missing or invalid 'documents' field")
     dataset_load_duration, _ = evaluator.end_monitoring("Dataset Load")
     
     collection = get_db_connection()
     collection.delete_many({})
     
-    evaluator.start_monitoring()
+    # Batch processing
+    batch_size = 8  # Reduced from 16 to avoid CUDA OOM
     docs = []
-    for entry in combined_dataset:
+    texts = []
+    evaluator.start_monitoring()
+    for entry in tqdm(combined_dataset, desc="Generating embeddings"):
         for doc in entry["documents"]:
-            embedding = embedding_generator.generate_embedding(doc)
-            docs.append({
-                "text": doc,
+            texts.append(doc)
+            if len(texts) >= batch_size:
+                embeddings = embedding_generator.generate_embedding(texts)
+                docs.extend([{
+                    "text": text,
+                    "embedding": embedding,
+                    "question_id": entry["id"],
+                    "source": "test"
+                } for text, embedding in zip(texts, embeddings)])
+                texts = []
+                # Clear GPU memory to prevent accumulation
+                torch.cuda.empty_cache()
+        if texts:  # Process remaining texts
+            embeddings = embedding_generator.generate_embedding(texts)
+            docs.extend([{
+                "text": text,
                 "embedding": embedding,
                 "question_id": entry["id"],
                 "source": "test"
-            })
-    embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding Generation")
+            } for text, embedding in zip(texts, embeddings)])
+            # Clear GPU memory
+            torch.cuda.empty_cache()
     
-    evaluator.start_monitoring()
-    collection.insert_many(docs)
-    storage_duration, storage_cpu_delta = evaluator.end_monitoring("Storage")
+    logger.info("Inserting documents into MongoDB")
+    collection.insert_many(docs, ordered=False)
+    embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding and Storage")
     
-    embedding_storage_time = embedding_duration + storage_duration
-    
-    evaluator.start_monitoring()
+    logger.info("Setting up vector index")
     setup_vector_index(collection, embedding_size)
-    index_duration, index_cpu_delta = evaluator.end_monitoring("Index Setup")
     
     evaluator.log_resources("After Index Setup")
     total_docs = collection.count_documents({})
-    print(f"Stored {total_docs} documents in MongoDB.")
+    logger.info(f"Stored {total_docs} documents in MongoDB.")
     
-    return collection, combined_dataset, embedding_storage_time
+    return collection, combined_dataset, embedding_duration

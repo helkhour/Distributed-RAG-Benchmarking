@@ -1,12 +1,15 @@
-# evaluation.py
 import time
 from concurrent.futures import ThreadPoolExecutor
 from pymongo import MongoClient
 from config import DB_URI, DB_NAME
 from retrieval import retrieve_top_k
+import logging
 
 def process_query(entry, collection, embedding_generator):
     """Process a single query and return metrics."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+    logger = logging.getLogger(__name__)
+    
     query = entry["question"]
     start_time = time.time()
     query_embedding = embedding_generator.generate_embedding(query)
@@ -17,6 +20,8 @@ def process_query(entry, collection, embedding_generator):
     retrieved_texts = [r["text"] for r in results]
     relevant_count = sum(text in relevant_docs for text in retrieved_texts)
 
+    logger.debug(f"Query: {query}, Latency: {latency:.4f}s, Relevant: {relevant_count}/{len(retrieved_texts)}")
+    
     return {
         "latency": latency,
         "results": results,
@@ -26,24 +31,23 @@ def process_query(entry, collection, embedding_generator):
         "has_results": bool(results)
     }
 
-def evaluate_retrieval_performance(dataset, collection, embedding_generator, max_workers=1):
-    """Evaluate retrieval performance with optional parallel queries."""
+def evaluate_retrieval_performance(dataset, collection, embedding_generator, max_workers=4):
+    """Evaluate retrieval performance with parallel queries."""
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+    logger = logging.getLogger(__name__)
+    
     total_queries = len(dataset)
     queries_with_results = 0
     total_relevant = 0
     total_retrieved = 0
     total_latency = 0
 
+    logger.info(f"Starting evaluation with {total_queries} queries, {max_workers} workers")
     start_total_time = time.time()
-    if max_workers == 1:
-        # Sequential processing
-        results = [process_query(entry, collection, embedding_generator) for entry in dataset]
-    else:
-        # Parallel processing
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            results = list(executor.map(
-                lambda entry: process_query(entry, collection, embedding_generator), dataset
-            ))
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        results = list(executor.map(
+            lambda entry: process_query(entry, collection, embedding_generator), dataset
+        ))
 
     # Aggregate results
     for res in results:
@@ -52,15 +56,6 @@ def evaluate_retrieval_performance(dataset, collection, embedding_generator, max
             queries_with_results += 1
         total_relevant += res["relevant_count"]
         total_retrieved += len(res["retrieved_texts"])
-
-        # Print query details
-        #print(f"\nQuery: {res['query']}")
-        #print(f"Top {len(res['results'])} results (Latency: {res['latency']:.4f} seconds):")
-        #for i, result in enumerate(res["results"], 1):
-        #    print(f"{i}. {result['text'][:100]}...")
-        #print("Retrieved relevant? (manual check):")
-        #for i, text in enumerate(res["retrieved_texts"], 1):
-        #    print(f"{i}. {text in dataset[results.index(res)]['documents']}")
 
     total_time = time.time() - start_total_time
 
@@ -77,13 +72,13 @@ def evaluate_retrieval_performance(dataset, collection, embedding_generator, max
     db_size_mb = stats["dataSize"] / (1024 * 1024)
     doc_count = collection.count_documents({})
 
-    # Print summary
-    print("\n=== Retrieval Performance Summary ===")
-    print(f"Database Size: {db_size_mb:.2f} MB ({doc_count} documents)")
-    print(f"Retrieval Success: {retrieval_success:.2%} ({queries_with_results}/{total_queries} queries returned results)")
-    print(f"Average Precision: {avg_precision:.2%} ({total_relevant}/{total_retrieved} relevant documents retrieved)")
-    print(f"Average Latency: {avg_latency:.4f} seconds/query")
-    print(f"Throughput: {throughput:.2f} queries/second (with {max_workers} workers)")
+    # Log summary
+    logger.info("\n=== Retrieval Performance Summary ===")
+    logger.info(f"Database Size: {db_size_mb:.2f} MB ({doc_count} documents)")
+    logger.info(f"Retrieval Success: {retrieval_success:.2%} ({queries_with_results}/{total_queries} queries)")
+    logger.info(f"Average Precision: {avg_precision:.2%} ({total_relevant}/{total_retrieved} docs)")
+    logger.info(f"Average Latency: {avg_latency:.4f} seconds/query")
+    logger.info(f"Throughput: {throughput:.2f} queries/second (with {max_workers} workers)")
 
     return {
         "retrieval_success": retrieval_success,

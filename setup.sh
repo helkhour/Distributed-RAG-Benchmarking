@@ -1,33 +1,66 @@
 #!/bin/bash
 
+
+set -e  # Exit immediately if a command fails
+set -o pipefail
+
 # Update package lists
 sudo apt-get update
 sudo apt-get install -y gnupg curl ca-certificates python3-venv python3-dev build-essential
 
-# Install NVIDIA Drivers
-# Required for PyTorch to use T4 GPU on G4dn.xlarge
+######################################
+#  NVIDIA Drivers and CUDA
+######################################
+
+# Remove old NVIDIA drivers if any
+sudo apt-get purge -y nvidia-* cuda-* nvidia-cuda*
+
+# Install NVIDIA drivers
 sudo apt-get install -y ubuntu-drivers-common
 sudo ubuntu-drivers autoinstall
-sudo apt-get install -y nvidia-driver-535 nvidia-utils-535
+sudo apt-get install -y nvidia-driver-535 nvidia-utils-535 nvidia-dkms-535
 
-# MongoDB Atlas CLI
-curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
-echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+# Install CUDA Toolkit 12.2
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update
-sudo apt-get install -y mongodb-atlas-cli
+sudo apt-get install -y cuda-toolkit-12-2
 
-# Docker (for MongoDB Atlas local deployment)
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove -y $pkg; done
+# Add CUDA to PATH
+if ! grep -q '/usr/local/cuda-12.2/bin' ~/.bashrc; then
+  echo 'export PATH=/usr/local/cuda-12.2/bin:$PATH' >> ~/.bashrc
+  echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+fi
+
+
+######################################
+# Docker Installation
+######################################
+
+# Remove conflicting packages
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
+  sudo apt-get remove -y $pkg || true
+done
+
+# Add Docker repository
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+$(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Install Docker
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Add 'ubuntu' user to docker group
 sudo usermod -aG docker ubuntu
+newgrp docker
 
 
-pip install bitsandbytes
 
 # Python
 cd /home/ubuntu/rag_project

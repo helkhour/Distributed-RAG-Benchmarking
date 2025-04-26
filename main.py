@@ -46,7 +46,6 @@ def summarize_results(model_name, embedding_time, sequential_metrics):
 def main():
     print("Starting RAG evaluation...")
     models = [
-        #"sentence-transformers/all-MiniLM-L6-v2",
         "meta-llama/Meta-Llama-3.1-8B"
     ]
 
