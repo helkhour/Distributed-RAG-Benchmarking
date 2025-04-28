@@ -5,6 +5,8 @@ from config import DB_URI, DB_NAME
 from retrieval import retrieve_top_k
 import logging
 
+# to flatten the embedding
+
 def process_query(entry, collection, embedding_generator):
     """Process a single query and return metrics."""
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -13,6 +15,9 @@ def process_query(entry, collection, embedding_generator):
     query = entry["question"]
     start_time = time.time()
     query_embedding = embedding_generator.generate_embedding(query)
+    # Ensure query_embedding is a flat list
+    if isinstance(query_embedding, list) and len(query_embedding) == 1 and isinstance(query_embedding[0], list):
+        query_embedding = query_embedding[0]
     results = retrieve_top_k(query_embedding, collection)
     latency = time.time() - start_time
 
@@ -30,6 +35,7 @@ def process_query(entry, collection, embedding_generator):
         "query": query,
         "has_results": bool(results)
     }
+
 
 def evaluate_retrieval_performance(dataset, collection, embedding_generator, max_workers=4):
     """Evaluate retrieval performance with parallel queries."""

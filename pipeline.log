@@ -1,0 +1,151 @@
+Starting RAG evaluation...
+
+=== Evaluating Model: mixedbread-ai/mxbai-embed-large-v1-256 (3 runs) ===
+
+--- Run 1 ---
+Before Data Load (Run 1) - CPU: 0.00%, CPU Time: 6.32s, Memory: 720.28 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 8.12s, Memory: 2023.16 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 3.52s, CPU Time Delta: 3.52s, CPU: 0.00%, Memory: 2048.79 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 12919.61s, CPU Time Delta: 25632.37s, CPU: 0.00%, Memory: 2258.62 MB
+Storage - Duration: 1.58s, CPU Time Delta: 0.84s, CPU: 0.00%, Memory: 2260.56 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 9.25s, CPU Time Delta: 0.02s, CPU: 0.00%, Memory: 2260.56 MB
+After Index Setup - CPU: 0.00%, CPU Time: 25645.26s, Memory: 2260.56 MB
+Stored 27614 documents in MongoDB.
+Data Load (Run 1) - Duration: 12944.25s, CPU Time Delta: 25637.19s, CPU: 0.00%, Memory: 2175.58 MB
+After Data Load (Run 1) - CPU: 0.00%, CPU Time: 25645.31s, Memory: 2175.58 MB
+Running sequential evaluation for run 1...
+Before Retrieval 1 - CPU: 1.00%, CPU Time: 25645.99s, Memory: 2175.58 MB
+After Retrieval 1 - CPU: 0.00%, CPU Time: 25645.99s, Memory: 2175.58 MB
+Before Retrieval 2 - CPU: 1.00%, CPU Time: 25646.49s, Memory: 2175.58 MB
+After Retrieval 2 - CPU: 0.00%, CPU Time: 25646.49s, Memory: 2175.58 MB
+Before Retrieval 3 - CPU: 0.00%, CPU Time: 25646.98s, Memory: 2175.58 MB
+After Retrieval 3 - CPU: 0.00%, CPU Time: 25646.98s, Memory: 2175.58 MB
+Before Retrieval 4 - CPU: 1.00%, CPU Time: 25647.55s, Memory: 2175.58 MB
+After Retrieval 4 - CPU: 0.00%, CPU Time: 25647.55s, Memory: 2175.58 MB
+
+=== Retrieval Performance Summary ===
+Database Size: 97.43 MB (27614 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 97.93% (8344/8520 relevant documents retrieved)
+Average Latency: 0.2794 seconds/query
+Throughput: 3.57 queries/second (with 1 workers)
+Evaluation (Run 1) - Duration: 795.43s, CPU Time Delta: 1532.84s, CPU: 0.00%, Memory: 2172.21 MB
+After Evaluation (Run 1) - CPU: 0.00%, CPU Time: 27178.15s, Memory: 2172.21 MB
+
+--- Run 2 ---
+Before Data Load (Run 2) - CPU: 0.00%, CPU Time: 27178.15s, Memory: 2172.21 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 27179.27s, Memory: 3423.38 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.32s, CPU Time Delta: 2.32s, CPU: 0.00%, Memory: 3444.45 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 7860.58s, CPU Time Delta: 15724.28s, CPU: 0.00%, Memory: 3569.88 MB
+Storage - Duration: 0.73s, CPU Time Delta: 0.40s, CPU: 0.00%, Memory: 3571.37 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 6.36s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 3571.37 MB
+After Index Setup - CPU: 0.00%, CPU Time: 42906.52s, Memory: 3571.37 MB
+Stored 13807 documents in MongoDB.
+Data Load (Run 2) - Duration: 7879.76s, CPU Time Delta: 15727.29s, CPU: 1.00%, Memory: 3474.69 MB
+After Data Load (Run 2) - CPU: 0.00%, CPU Time: 42906.57s, Memory: 3474.69 MB
+Running sequential evaluation for run 2...
+
+=== Retrieval Performance Summary ===
+Database Size: 48.71 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 94.54% (8055/8520 relevant documents retrieved)
+Average Latency: 0.2931 seconds/query
+Throughput: 3.40 queries/second (with 1 workers)
+Evaluation (Run 2) - Duration: 834.51s, CPU Time Delta: 1627.29s, CPU: 1.00%, Memory: 3466.79 MB
+After Evaluation (Run 2) - CPU: 0.00%, CPU Time: 44533.87s, Memory: 3466.79 MB
+
+--- Run 3 ---
+Before Data Load (Run 3) - CPU: 0.00%, CPU Time: 44533.87s, Memory: 3466.79 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 44535.03s, Memory: 4719.63 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.30s, CPU Time Delta: 2.29s, CPU: 0.00%, Memory: 4740.76 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 7642.83s, CPU Time Delta: 15288.37s, CPU: 1.00%, Memory: 4618.01 MB
+Storage - Duration: 0.73s, CPU Time Delta: 0.34s, CPU: 0.00%, Memory: 4619.88 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 7.45s, CPU Time Delta: 0.01s, CPU: 1.00%, Memory: 4619.88 MB
+After Index Setup - CPU: 0.00%, CPU Time: 59826.30s, Memory: 4619.88 MB
+Stored 13807 documents in MongoDB.
+Data Load (Run 3) - Duration: 7662.83s, CPU Time Delta: 15291.31s, CPU: 0.00%, Memory: 4531.05 MB
+After Data Load (Run 3) - CPU: 0.00%, CPU Time: 59826.34s, Memory: 4531.05 MB
+Running sequential evaluation for run 3...
+
+=== Retrieval Performance Summary ===
+Database Size: 48.71 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 94.54% (8055/8520 relevant documents retrieved)
+Average Latency: 0.2755 seconds/query
+Throughput: 3.62 queries/second (with 1 workers)
+Evaluation (Run 3) - Duration: 784.36s, CPU Time Delta: 1542.69s, CPU: 0.00%, Memory: 4524.28 MB
+After Evaluation (Run 3) - CPU: 0.00%, CPU Time: 61369.03s, Memory: 4524.28 MB
+
+=== Summary for Model: mixedbread-ai/mxbai-embed-large-v1-256 ===
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 256
+Average Embedding Time (s): 9475.35 ± 2986.16
+Average End-to-End Time (s): 10304.38 ± 2981.51
+Average Latency (s/query): 0.2827 ± 0.0093
+Average Throughput (q/s): 3.53 ± 0.11
+Average Precision (%): 95.67 ± 1.96
+
+=== Evaluating Model: mixedbread-ai/mxbai-embed-large-v1-512 (3 runs) ===
+
+--- Run 1 ---
+Before Data Load (Run 1) - CPU: 0.00%, CPU Time: 61369.03s, Memory: 4500.44 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 61369.59s, Memory: 4499.45 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.31s, CPU Time Delta: 2.32s, CPU: 0.00%, Memory: 4521.45 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 7775.12s, CPU Time Delta: 15549.32s, CPU: 1.00%, Memory: 4705.84 MB
+Storage - Duration: 1.56s, CPU Time Delta: 0.71s, CPU: 0.00%, Memory: 4707.72 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 9.00s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 4707.72 MB
+After Index Setup - CPU: 0.00%, CPU Time: 76922.17s, Memory: 4707.72 MB
+Stored 13807 documents in MongoDB.
+Data Load (Run 1) - Duration: 7797.69s, CPU Time Delta: 15552.67s, CPU: 0.00%, Memory: 4545.75 MB
+After Data Load (Run 1) - CPU: 0.00%, CPU Time: 76922.26s, Memory: 4545.75 MB
+Running sequential evaluation for run 1...
+
+=== Retrieval Performance Summary ===
+Database Size: 92.54 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 95.42% (8130/8520 relevant documents retrieved)
+Average Latency: 0.2900 seconds/query
+Throughput: 3.44 queries/second (with 1 workers)
+Evaluation (Run 1) - Duration: 825.59s, CPU Time Delta: 1616.65s, CPU: 0.00%, Memory: 4243.00 MB
+After Evaluation (Run 1) - CPU: 0.00%, CPU Time: 78538.91s, Memory: 4243.00 MB
+
+--- Run 2 ---
+Before Data Load (Run 2) - CPU: 0.00%, CPU Time: 78538.91s, Memory: 4243.00 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 78539.45s, Memory: 4242.92 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.30s, CPU Time Delta: 2.30s, CPU: 0.00%, Memory: 4264.79 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 7602.73s, CPU Time Delta: 15208.77s, CPU: 0.00%, Memory: 4432.87 MB
+Storage - Duration: 1.48s, CPU Time Delta: 0.71s, CPU: 0.00%, Memory: 4434.75 MB
+Existing 'vector_index' dropped.

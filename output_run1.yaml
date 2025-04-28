@@ -1,0 +1,50 @@
+Starting RAG evaluation on g5.xlarge instance with nvidia 
+hotpotqa dataset only
+
+=== Evaluating Model: meta-llama/Meta-Llama-3.1-8B ===
+Before Data Load - CPU: 0.00%, CPU Time: 4.30s, Memory: 690.98 MB
+Set pad_token to eos_token: <|eot_id|>
+Loading checkpoint shards: 100%|██████████| 4/4 [00:35<00:00,  8.93s/it]
+2025-04-28 15:07:31,273 - INFO - HotpotQA Test Split Size: 1557 docs, 0.73 MB
+2025-04-28 15:07:31,273 - INFO - Combined Dataset Size: 1557 docs, 0.73 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 11.36s, Memory: 824.66 MB
+Dataset Load - Duration: 0.37s, CPU Time Delta: 0.36s, CPU: 0.00%, Memory: 831.25 MB
+Connected to MongoDB successfully!
+Generating embeddings: 100%|██████████| 390/390 [02:37<00:00,  2.47it/s]
+2025-04-28 15:10:10,161 - INFO - Inserting documents into MongoDB
+2025-04-28 15:10:13,112 - INFO - Setting up vector index
+2025-04-28 15:10:19,110 - INFO - Stored 2695 documents in MongoDB.
+2025-04-28 15:10:20,205 - INFO - Starting evaluation with 390 queries, 1 workers
+2025-04-28 15:10:46,177 - INFO - 
+=== Retrieval Performance Summary ===
+2025-04-28 15:10:46,177 - INFO - Database Size: 146.07 MB (2695 documents)
+2025-04-28 15:10:46,177 - INFO - Retrieval Success: 100.00% (390/390 queries)
+2025-04-28 15:10:46,177 - INFO - Average Precision: 45.64% (534/1170 docs)
+2025-04-28 15:10:46,177 - INFO - Average Latency: 0.0664 seconds/query
+2025-04-28 15:10:46,177 - INFO - Throughput: 15.02 queries/second (with 1 workers)
+Embedding and Storage - Duration: 159.67s, CPU Time Delta: 158.88s, CPU: 0.00%, Memory: 1831.23 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+After Index Setup - CPU: 0.00%, CPU Time: 170.78s, Memory: 1831.17 MB
+Data Load - Duration: 171.85s, CPU Time Delta: 159.52s, CPU: 0.00%, Memory: 1544.29 MB
+
+Running evaluation...
+Before Retrieval 1 - CPU: 0.00%, CPU Time: 171.05s, Memory: 1544.81 MB
+After Retrieval 1 - CPU: 0.00%, CPU Time: 171.05s, Memory: 1544.81 MB
+Before Retrieval 2 - CPU: 0.00%, CPU Time: 171.09s, Memory: 1544.81 MB
+After Retrieval 2 - CPU: 0.00%, CPU Time: 171.09s, Memory: 1544.81 MB
+Before Retrieval 3 - CPU: 0.00%, CPU Time: 171.13s, Memory: 1544.12 MB
+After Retrieval 3 - CPU: 0.00%, CPU Time: 171.13s, Memory: 1544.12 MB
+Before Retrieval 4 - CPU: 0.00%, CPU Time: 171.17s, Memory: 1544.12 MB
+After Retrieval 4 - CPU: 0.00%, CPU Time: 171.17s, Memory: 1544.12 MB
+Evaluation - Duration: 25.97s, CPU Time Delta: 15.46s, CPU: 0.00%, Memory: 1538.67 MB
+
+=== Summary for Model: meta-llama/Meta-Llama-3.1-8B ===
+Model Specs:
+  Parameters: 8,000,000,000 (~8000M)
+  Embedding Size: 4096
+Embedding Time (s): 159.67
+Latency (s/query): 0.0664
+Throughput (q/s): 15.02
+Precision (%): 45.64

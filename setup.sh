@@ -34,8 +34,17 @@ fi
 
 
 ######################################
-# Docker Installation
+# Docker and Atlas Installation
 ######################################
+
+
+
+# MongoDB Atlas CLI
+curl -fsSL https://pgp.mongodb.com/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-atlas-cli
+
 
 # Remove conflicting packages
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
@@ -59,8 +68,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 # Add 'ubuntu' user to docker group
 sudo usermod -aG docker ubuntu
 newgrp docker
-
-
 
 # Python
 cd /home/ubuntu/rag_project
