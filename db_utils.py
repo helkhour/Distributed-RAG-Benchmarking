@@ -17,7 +17,7 @@ def get_db_connection():
         print("Ensure MongoDB is running and accessible at", DB_URI)
         raise
 
-def setup_vector_index(collection, embedding_size):
+def setup_vector_index(collection, output_dimension):
     """Create or update the vector index for the collection."""
     try:
         # Drop existing vector index if it exists  # Delete this for first run on machine tho
@@ -36,7 +36,7 @@ def setup_vector_index(collection, embedding_size):
                     "fields": {
                         "embedding": {
                             "type": "knnVector",
-                            "dimensions": embedding_size,
+                            "dimensions": output_dimension,
                             "similarity": "cosine"
                         }
                     }

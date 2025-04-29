@@ -50,14 +50,14 @@ def main():
     print("Starting RAG evaluation...")
     models = [
         "sentence-transformers/all-MiniLM-L6-v2",
-        "intfloat/e5-small-v2",
-        "thenlper/gte-base-384",
-        "sentence-transformers/all-mpnet-base-v2",
-        "BAAI/bge-base-en-v1.5",
-        "thenlper/gte-base",
-        "mixedbread-ai/mxbai-embed-large-v1-256",
-        "mixedbread-ai/mxbai-embed-large-v1-512",
-        "mixedbread-ai/mxbai-embed-large-v1-1024"
+        # "intfloat/e5-small-v2",
+        # "thenlper/gte-base-384",
+        # "sentence-transformers/all-mpnet-base-v2",
+        # "BAAI/bge-base-en-v1.5",
+        # "thenlper/gte-base",
+        # "mixedbread-ai/mxbai-embed-large-v1-256",
+        # "mixedbread-ai/mxbai-embed-large-v1-512",
+        # "mixedbread-ai/mxbai-embed-large-v1-1024"
     ]
 
     for model_name in models:

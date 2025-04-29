@@ -1,0 +1,254 @@
+Starting RAG evaluation...
+
+=== Evaluating Model: sentence-transformers/all-MiniLM-L6-v2 ===
+Before Data Load - CPU: 0.00%, CPU Time: 4.71s, Memory: 720.84 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 4.88s, Memory: 746.34 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.50s, CPU Time Delta: 2.51s, CPU: 0.00%, Memory: 770.59 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 335.16s, CPU Time Delta: 670.33s, CPU: 0.00%, Memory: 1085.20 MB
+Storage - Duration: 1.60s, CPU Time Delta: 0.81s, CPU: 0.00%, Memory: 1087.09 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 6.36s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 1087.09 MB
+After Index Setup - CPU: 0.00%, CPU Time: 678.79s, Memory: 1087.09 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 356.05s, CPU Time Delta: 673.97s, CPU: 0.00%, Memory: 962.09 MB
+After Data Load - CPU: 0.00%, CPU Time: 678.85s, Memory: 962.09 MB
+
+Running sequential evaluation...
+Before Retrieval 1 - CPU: 1.00%, CPU Time: 678.89s, Memory: 960.11 MB
+After Retrieval 1 - CPU: 0.00%, CPU Time: 678.89s, Memory: 960.11 MB
+Before Retrieval 2 - CPU: 1.00%, CPU Time: 678.93s, Memory: 957.14 MB
+After Retrieval 2 - CPU: 0.00%, CPU Time: 678.93s, Memory: 957.14 MB
+Before Retrieval 3 - CPU: 1.00%, CPU Time: 678.96s, Memory: 957.14 MB
+After Retrieval 3 - CPU: 0.00%, CPU Time: 678.96s, Memory: 957.14 MB
+Before Retrieval 4 - CPU: 1.00%, CPU Time: 678.99s, Memory: 957.14 MB
+After Retrieval 4 - CPU: 0.00%, CPU Time: 678.99s, Memory: 957.14 MB
+
+=== Retrieval Performance Summary ===
+Database Size: 70.63 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 93.56% (7971/8520 relevant documents retrieved)
+Average Latency: 0.0219 seconds/query
+Throughput: 44.20 queries/second (with 1 workers)
+Evaluation - Duration: 64.26s, CPU Time Delta: 90.89s, CPU: 0.00%, Memory: 949.14 MB
+After Evaluation - CPU: 0.00%, CPU Time: 769.74s, Memory: 949.14 MB
+
+=== Summary for Model: sentence-transformers/all-MiniLM-L6-v2 ===
+
+model size : 22.7M output size : 384 million 
+
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 384
+Embedding Time (s): 336.76
+Latency (s/query): 0.0219
+Throughput (q/s): 44.20
+Precision (%): 93.56
+
+=== Evaluating Model: intfloat/e5-small-v2 ===
+Before Data Load - CPU: 0.00%, CPU Time: 769.74s, Memory: 926.43 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 770.17s, Memory: 955.23 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.51s, CPU Time Delta: 2.52s, CPU: 0.00%, Memory: 975.11 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 637.97s, CPU Time Delta: 1276.21s, CPU: 1.00%, Memory: 1242.96 MB
+Storage - Duration: 1.22s, CPU Time Delta: 0.60s, CPU: 0.00%, Memory: 1251.52 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 6.24s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 1251.52 MB
+After Index Setup - CPU: 0.00%, CPU Time: 2049.74s, Memory: 1251.52 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 657.45s, CPU Time Delta: 1279.63s, CPU: 0.00%, Memory: 1132.54 MB
+After Data Load - CPU: 0.00%, CPU Time: 2049.80s, Memory: 1131.54 MB
+
+Running sequential evaluation...
+
+=== Retrieval Performance Summary ===
+Database Size: 70.63 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 94.68% (8067/8520 relevant documents retrieved)
+Average Latency: 0.0299 seconds/query
+Throughput: 32.69 queries/second (with 1 workers)
+Evaluation - Duration: 86.89s, CPU Time Delta: 149.84s, CPU: 0.00%, Memory: 1117.75 MB
+After Evaluation - CPU: 0.00%, CPU Time: 2199.64s, Memory: 1117.75 MB
+
+=== Summary for Model: intfloat/e5-small-v2 ===
+model size : 33M output size 384 million 
+
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 384
+Embedding Time (s): 639.19
+Latency (s/query): 0.0299
+Throughput (q/s): 32.69
+Precision (%): 94.68
+
+=== Evaluating Model: thenlper/gte-base-384 ===
+Before Data Load - CPU: 0.00%, CPU Time: 2199.64s, Memory: 1094.93 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 2200.58s, Memory: 1484.42 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.51s, CPU Time Delta: 2.52s, CPU: 0.00%, Memory: 1505.53 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 2087.76s, CPU Time Delta: 4176.44s, CPU: 0.00%, Memory: 1466.58 MB
+Storage - Duration: 1.26s, CPU Time Delta: 0.60s, CPU: 0.00%, Memory: 1475.80 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 8.33s, CPU Time Delta: 0.02s, CPU: 0.00%, Memory: 1475.80 MB
+After Index Setup - CPU: 0.00%, CPU Time: 6380.37s, Memory: 1475.80 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 2109.31s, CPU Time Delta: 4179.85s, CPU: 0.00%, Memory: 1358.83 MB
+After Data Load - CPU: 0.00%, CPU Time: 6380.43s, Memory: 1358.83 MB
+
+Running sequential evaluation...
+
+=== Retrieval Performance Summary ===
+Database Size: 70.63 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 95.33% (8122/8520 relevant documents retrieved)
+Average Latency: 0.0778 seconds/query
+Throughput: 12.73 queries/second (with 1 workers)
+Evaluation - Duration: 223.07s, CPU Time Delta: 421.40s, CPU: 0.00%, Memory: 1347.97 MB
+After Evaluation - CPU: 0.00%, CPU Time: 6801.83s, Memory: 1347.97 MB
+
+=== Summary for Model: thenlper/gte-base-384 ===
+model size 110 m , output size but is 768 but we projected to 384
+
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 384
+Embedding Time (s): 2089.03
+Latency (s/query): 0.0778
+Throughput (q/s): 12.73
+Precision (%): 95.33
+
+=== Evaluating Model: sentence-transformers/all-mpnet-base-v2 ===
+Before Data Load - CPU: 0.00%, CPU Time: 6801.83s, Memory: 1325.23 MB
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+Before Dataset Load - CPU: 0.00%, CPU Time: 6802.85s, Memory: 1334.50 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.50s, CPU Time Delta: 2.50s, CPU: 0.00%, Memory: 1355.26 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 2117.80s, CPU Time Delta: 4236.69s, CPU: 1.00%, Memory: 2087.70 MB
+Storage - Duration: 2.60s, CPU Time Delta: 1.29s, CPU: 0.00%, Memory: 1999.67 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 8.34s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 1999.67 MB
+After Index Setup - CPU: 0.00%, CPU Time: 11043.57s, Memory: 1999.67 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 2141.43s, CPU Time Delta: 4240.83s, CPU: 0.00%, Memory: 1720.83 MB
+After Data Load - CPU: 0.00%, CPU Time: 11043.68s, Memory: 1720.83 MB
+
+Running sequential evaluation...
+
+=== Retrieval Performance Summary ===
+Database Size: 136.36 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 94.47% (8049/8520 relevant documents retrieved)
+Average Latency: 0.0806 seconds/query
+Throughput: 12.29 queries/second (with 1 workers)
+Evaluation - Duration: 231.02s, CPU Time Delta: 425.59s, CPU: 0.00%, Memory: 1713.86 MB
+After Evaluation - CPU: 0.00%, CPU Time: 11469.27s, Memory: 1713.86 MB
+
+=== Summary for Model: sentence-transformers/all-mpnet-base-v2 ===
+
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 768
+Embedding Time (s): 2120.40
+Latency (s/query): 0.0806
+Throughput (q/s): 12.29
+Precision (%): 94.47
+
+=== Evaluating Model: BAAI/bge-base-en-v1.5 ===
+Before Data Load - CPU: 0.00%, CPU Time: 11469.27s, Memory: 1692.08 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 11470.40s, Memory: 1697.20 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.50s, CPU Time Delta: 2.51s, CPU: 0.00%, Memory: 1719.08 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 2138.02s, CPU Time Delta: 4277.15s, CPU: 0.00%, Memory: 2350.37 MB
+Storage - Duration: 2.37s, CPU Time Delta: 1.05s, CPU: 0.00%, Memory: 2351.75 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 11.07s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 2351.75 MB
+After Index Setup - CPU: 0.00%, CPU Time: 15751.35s, Memory: 2351.75 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 2163.35s, CPU Time Delta: 4281.07s, CPU: 0.00%, Memory: 2084.78 MB
+After Data Load - CPU: 0.00%, CPU Time: 15751.47s, Memory: 2084.78 MB
+
+Running sequential evaluation...
+
+=== Retrieval Performance Summary ===
+Database Size: 136.36 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 95.26% (8116/8520 relevant documents retrieved)
+Average Latency: 0.0825 seconds/query
+Throughput: 12.01 queries/second (with 1 workers)
+Evaluation - Duration: 236.41s, CPU Time Delta: 436.22s, CPU: 0.00%, Memory: 2072.07 MB
+After Evaluation - CPU: 0.00%, CPU Time: 16187.69s, Memory: 2072.07 MB
+
+=== Summary for Model: BAAI/bge-base-en-v1.5 ===
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 768
+Embedding Time (s): 2140.39
+Latency (s/query): 0.0825
+Throughput (q/s): 12.01
+Precision (%): 95.26
+
+=== Evaluating Model: thenlper/gte-base ===
+Before Data Load - CPU: 0.00%, CPU Time: 16187.69s, Memory: 2050.23 MB
+Before Dataset Load - CPU: 0.00%, CPU Time: 16188.06s, Memory: 2134.86 MB
+HotpotQA Test Split Size: 1557 documents, 0.73 MB
+PubMedQA Test Split Size: 12250 documents, 4.31 MB
+Combined Dataset Size: 13807 documents, 5.04 MB
+Dataset Load - Duration: 2.51s, CPU Time Delta: 2.51s, CPU: 0.00%, Memory: 2156.73 MB
+Connected to MongoDB successfully!
+Embedding Generation - Duration: 2084.65s, CPU Time Delta: 4170.22s, CPU: 1.00%, Memory: 1658.37 MB
+Storage - Duration: 2.46s, CPU Time Delta: 1.26s, CPU: 0.00%, Memory: 1663.12 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+Index Setup - Duration: 12.23s, CPU Time Delta: 0.01s, CPU: 0.00%, Memory: 1663.12 MB
+After Index Setup - CPU: 0.00%, CPU Time: 20362.29s, Memory: 1663.12 MB
+Stored 13807 documents in MongoDB.
+Data Load - Duration: 2111.20s, CPU Time Delta: 4174.35s, CPU: 0.00%, Memory: 1338.40 MB
+After Data Load - CPU: 0.00%, CPU Time: 20362.41s, Memory: 1336.40 MB
+
+Running sequential evaluation...
+
+=== Retrieval Performance Summary ===
+Database Size: 136.36 MB (13807 documents)
+Retrieval Success: 100.00% (2840/2840 queries returned results)
+Average Precision: 96.48% (8220/8520 relevant documents retrieved)
+Average Latency: 0.0801 seconds/query
+Throughput: 12.36 queries/second (with 1 workers)
+Evaluation - Duration: 229.76s, CPU Time Delta: 422.01s, CPU: 0.00%, Memory: 1326.55 MB
+After Evaluation - CPU: 0.00%, CPU Time: 20784.42s, Memory: 1326.55 MB
+
+=== Summary for Model: thenlper/gte-base ===
+model size 110 m ,dimension is 768 
+
+Model Specs:
+  Parameters: Unknown
+  Embedding Size: 768
+Embedding Time (s): 2087.11
+Latency (s/query): 0.0801
+Throughput (q/s): 12.36
+Precision (%): 96.48

@@ -19,7 +19,7 @@ def setup_vector_index(collection):
                     "fields": {
                         "embedding": {
                             "type": "knnVector",
-                            "dimensions": MODEL_CONFIG["embedding_size"],
+                            "dimensions": MODEL_CONFIG["output_dimension"],
                             "similarity": "cosine"
                         }
                     }

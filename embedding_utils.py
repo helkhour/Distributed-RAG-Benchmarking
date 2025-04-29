@@ -4,16 +4,16 @@ import torch.nn as nn
 from config import MODEL_CONFIGS
 
 class EmbeddingGenerator:
-    def __init__(self, model_name, embedding_size):
+    def __init__(self, model_name, output_dimension):
         # Use base_model if provided, otherwise use model_name
         base_model = MODEL_CONFIGS[model_name].get("base_model", model_name)
         self.model = SentenceTransformer(base_model)
         self.model_name = model_name
-        self.embedding_size = embedding_size
+        self.output_dimension = output_dimension
 
         if "mxbai-embed-large-v1" in model_name:
-            self.output_size = embedding_size
-        elif "gte-base" in model_name and embedding_size == 384:
+            self.output_size = output_dimension
+        elif "gte-base" in model_name and output_dimension == 384:
             self.projection = nn.Linear(768, 384)                      # test - shrinking output size to 384 
 # we attach a projection layer to the oject of the class to reduce the output size to 384 in generate_embedding
 
