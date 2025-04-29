@@ -48,7 +48,7 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     collection.delete_many({})
     
     # Batch processing
-    batch_size = 8  # Reduced from 16 to avoid CUDA OOM
+    batch_size = 8  # it was 32 and threw an OOM error - could increase to 16 maybe
     docs = []
     texts = []
     evaluator.start_monitoring()
@@ -64,8 +64,9 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
                     "source": "test"
                 } for text, embedding in zip(texts, embeddings)])
                 texts = []
-                # Clear GPU memory to prevent accumulation
-                torch.cuda.empty_cache()
+                torch.cuda.empty_cache()                                 # Clear GPU memory to prevent accumulation
+                # added this because of a bug in my code but im not sure it is essential. 
+
         if texts:  # Process remaining texts
             embeddings = embedding_generator.generate_embedding(texts)
             docs.extend([{
