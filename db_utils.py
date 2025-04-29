@@ -20,7 +20,7 @@ def get_db_connection():
 def setup_vector_index(collection, embedding_size):
     """Create or update the vector index for the collection."""
     try:
-        # Drop existing vector index if it exists
+        # Drop existing vector index if it exists  # Delete this for first run on machine tho
         indexes = list(collection.list_search_indexes())
         for index in indexes:
             if index["name"] == "vector_index":

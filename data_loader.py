@@ -4,6 +4,16 @@ from config import DATASET_NAME, SUBSET_NAME
 from db_utils import get_db_connection, setup_vector_index
 from system_evaluation import SystemEvaluator
 
+def compute_doc_stats(dataset):
+    doc_count = 0
+    total_bytes = 0
+    for entry in dataset:
+        documents = entry["documents"]
+        doc_count += len(documents)
+        total_bytes += sum(len(doc.encode("utf-8")) for doc in documents)
+    return doc_count, total_bytes / (1024 * 1024)  # in MB
+
+
 def load_and_store_data(limit=None, embedding_generator=None, embedding_size=None):
     """Load hotpotqa and pubmedqa test splits, store in MongoDB with embeddings."""
     evaluator = SystemEvaluator()
@@ -17,13 +27,10 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     pubmedqa_dataset = load_dataset(DATASET_NAME, name="pubmedqa", split=split)
     
     evaluator.start_monitoring()
-    hotpotqa_doc_count = sum(len(entry["documents"]) for entry in hotpotqa_dataset)
-    hotpotqa_bytes = sum(len(doc.encode('utf-8')) for entry in hotpotqa_dataset for doc in entry["documents"])
-    hotpotqa_mb = hotpotqa_bytes / (1024 * 1024)  # Convert bytes to MB
-    
-    pubmedqa_doc_count = sum(len(entry["documents"]) for entry in pubmedqa_dataset)
-    pubmedqa_bytes = sum(len(doc.encode('utf-8')) for entry in pubmedqa_dataset for doc in entry["documents"])
-    pubmedqa_mb = pubmedqa_bytes / (1024 * 1024)  # Convert bytes to MB
+
+
+    hotpotqa_doc_count, hotpotqa_mb = compute_doc_stats(hotpotqa_dataset)
+    pubmedqa_doc_count, pubmedqa_mb = compute_doc_stats(pubmedqa_dataset)
     
     combined_dataset = concatenate_datasets([hotpotqa_dataset, pubmedqa_dataset])
     total_doc_count = hotpotqa_doc_count + pubmedqa_doc_count
@@ -34,6 +41,7 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     print(f"Combined Dataset Size: {total_doc_count} documents, {total_mb:.2f} MB")
     
     dataset_load_duration, _ = evaluator.end_monitoring("Dataset Load")
+    print("Dataset Load Duration: %.2f seconds", dataset_load_duration)
     
     collection = get_db_connection()
     collection.delete_many({})

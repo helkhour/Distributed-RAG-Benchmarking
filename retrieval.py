@@ -21,7 +21,7 @@ def retrieve_top_k(query_embedding, collection):
                 "path": "embedding",
                 "index": "vector_index",
                 "limit": K,
-                "numCandidates": K * 100
+                "numCandidates": K * 100  # this is the number of candidates to scan before picking top K, higher = better recall, slower 
             }
         },
         {
