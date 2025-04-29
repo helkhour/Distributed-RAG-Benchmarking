@@ -1,0 +1,69 @@
+/home/ubuntu/rag_project/venv/lib/python3.10/site-packages/torch/cuda/__init__.py:789: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+Starting RAG evaluation...
+
+=== Evaluating Model: meta-llama/Meta-Llama-3.1-8B ===
+Before Data Load - CPU: 0.00%, CPU Time: 4.30s, Memory: 696.85 MB
+Set pad_token to eos_token: <|eot_id|>
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]
+Loading checkpoint shards:  25%|██▌       | 1/4 [00:18<00:54, 18.09s/it]
+Loading checkpoint shards:  50%|█████     | 2/4 [00:36<00:37, 18.53s/it]
+Loading checkpoint shards:  75%|███████▌  | 3/4 [00:46<00:14, 14.43s/it]
+Loading checkpoint shards: 100%|██████████| 4/4 [00:46<00:00, 11.62s/it]
+Before Dataset Load - CPU: 0.00%, CPU Time: 12.67s, Memory: 889.18 MB
+
+Generating train split:   0%|          | 0/19600 [00:00<?, ? examples/s]
+Generating train split:  36%|███▌      | 7000/19600 [00:00<00:00, 57375.04 examples/s]
+Generating train split:  82%|████████▏ | 16000/19600 [00:00<00:00, 70531.98 examples/s]
+Generating train split: 100%|██████████| 19600/19600 [00:00<00:00, 71329.78 examples/s]
+
+Generating validation split:   0%|          | 0/2450 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 2450/2450 [00:00<00:00, 66964.55 examples/s]
+
+Generating test split:   0%|          | 0/2450 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 2450/2450 [00:00<00:00, 66517.64 examples/s]
+2025-04-28 15:28:58,689 - INFO - HotpotQA Test Split Size: 1557 docs, 0.73 MB
+2025-04-28 15:28:58,689 - INFO - PubMedQA Test Split Size: 12250 docs, 4.31 MB
+2025-04-28 15:28:58,689 - INFO - Combined Dataset Size: 13807 docs, 5.04 MB
+Dataset Load - Duration: 3.39s, CPU Time Delta: 3.39s, CPU: 0.00%, Memory: 1076.01 MB
+Connected to MongoDB successfully!
+
+Generating embeddings: 100%|██████████| 2840/2840 [18:30<00:00,  2.56it/s]
+2025-04-28 15:47:31,503 - INFO - Inserting documents into MongoDB
+2025-04-28 15:47:55,638 - INFO - Setting up vector index
+2025-04-28 15:48:48,838 - INFO - Stored 23520 documents in MongoDB.
+2025-04-28 15:48:50,725 - INFO - Starting evaluation with 2840 queries, 1 workers
+2025-04-28 15:51:38,478 - INFO - 
+=== Retrieval Performance Summary ===
+2025-04-28 15:51:38,478 - INFO - Database Size: 1272.19 MB (23520 documents)
+2025-04-28 15:51:38,478 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-04-28 15:51:38,478 - INFO - Average Precision: 64.46% (5492/8520 docs)
+2025-04-28 15:51:38,478 - INFO - Average Latency: 0.0589 seconds/query
+2025-04-28 15:51:38,478 - INFO - Throughput: 16.93 queries/second (with 1 workers)
+Embedding and Storage - Duration: 1133.40s, CPU Time Delta: 1126.59s, CPU: 0.00%, Memory: 5298.55 MB
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+After Index Setup - CPU: 0.00%, CPU Time: 1144.23s, Memory: 5295.82 MB
+Data Load - Duration: 1200.43s, CPU Time Delta: 1132.45s, CPU: 0.00%, Memory: 2462.06 MB
+
+Running evaluation...
+Before Retrieval 1 - CPU: 0.00%, CPU Time: 1146.60s, Memory: 2483.47 MB
+After Retrieval 1 - CPU: 0.00%, CPU Time: 1146.60s, Memory: 2483.72 MB
+Before Retrieval 2 - CPU: 0.00%, CPU Time: 1146.64s, Memory: 2483.72 MB
+After Retrieval 2 - CPU: 0.00%, CPU Time: 1146.64s, Memory: 2483.72 MB
+Before Retrieval 3 - CPU: 0.00%, CPU Time: 1146.68s, Memory: 2483.72 MB
+After Retrieval 3 - CPU: 0.00%, CPU Time: 1146.68s, Memory: 2483.72 MB
+Before Retrieval 4 - CPU: 0.00%, CPU Time: 1146.72s, Memory: 2483.72 MB
+After Retrieval 4 - CPU: 0.00%, CPU Time: 1146.72s, Memory: 2483.72 MB
+Evaluation - Duration: 167.76s, CPU Time Delta: 113.06s, CPU: 0.00%, Memory: 2467.65 MB
+
+=== Summary for Model: meta-llama/Meta-Llama-3.1-8B ===
+Model Specs:
+  Parameters: 8,000,000,000 (~8000M)
+  Embedding Size: 4096
+Embedding Time (s): 1133.40
+Latency (s/query): 0.0589
+Throughput (q/s): 16.93
+Precision (%): 64.46
