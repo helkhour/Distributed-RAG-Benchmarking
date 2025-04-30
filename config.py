@@ -9,6 +9,6 @@ DB_URI = "mongodb://localhost:27017/?directConnection=true"
 DB_NAME = "rag_db"
 COLLECTION_NAME = "hotpotqa_docs"
 K = 3
-NUM_CANDIDATES = 30
+NUM_CANDIDATES = 100
 DATASET_NAME = "rungalileo/ragbench"
 SUBSET_NAME = "hotpotqa"

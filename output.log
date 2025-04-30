@@ -67,3 +67,58 @@ Embedding Time (s): 1133.40
 Latency (s/query): 0.0589
 Throughput (q/s): 16.93
 Precision (%): 64.46
+Starting RAG evaluation...
+
+=== Evaluating Model: meta-llama/Meta-Llama-3.1-8B ===
+Before Data Load - CPU: 0.00%, CPU Time: 4.39s, Memory: 684.97 MB
+Set pad_token to eos_token: <|eot_id|>
+/home/ubuntu/rag_project/venv/lib/python3.10/site-packages/torch/cuda/__init__.py:789: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+Loading checkpoint shards: 100%|██████████| 4/4 [00:10<00:00,  2.52s/it]
+Before Dataset Load - CPU: 0.00%, CPU Time: 10.04s, Memory: 873.62 MB
+2025-04-29 23:54:02,160 - INFO - HotpotQA Test Split Size: 1557 docs, 0.73 MB
+2025-04-29 23:54:02,160 - INFO - PubMedQA Test Split Size: 12250 docs, 4.31 MB
+2025-04-29 23:54:02,160 - INFO - Combined Dataset Size: 13807 docs, 5.04 MB
+2025-04-29 23:54:03,303 - INFO - Unique Documents: 7482
+Dataset Load - Duration: 4.49s, CPU Time Delta: 4.46s, CPU: 0.00%, Memory: 902.91 MB
+Connected to MongoDB successfully!
+Generating embeddings: 100%|██████████| 7482/7482 [06:14<00:00, 19.98it/s]
+Embedding and Storage - Duration: 374.59s, CPU Time Delta: 376.70s, CPU: 0.00%, Memory: 2629.41 MB
+2025-04-30 00:00:21,045 - INFO - Embedding and Storage Duration: 374.59s
+2025-04-30 00:00:21,045 - INFO - Inserting documents into MongoDB
+2025-04-30 00:00:27,651 - INFO - Setting up vector index
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Vector index is now ready!
+After Index Setup - CPU: 0.00%, CPU Time: 394.57s, Memory: 2661.39 MB
+2025-04-30 00:00:47,803 - INFO - Stored 7482 documents in MongoDB.
+Data Load - Duration: 413.31s, CPU Time Delta: 384.80s, CPU: 0.00%, Memory: 1796.41 MB
+
+Running evaluation...
+2025-04-30 00:00:49,068 - INFO - Starting evaluation with 2840 queries, 1 workers
+Before Retrieval 1 - CPU: 0.00%, CPU Time: 396.41s, Memory: 1815.87 MB
+After Retrieval 1 - CPU: 0.00%, CPU Time: 396.41s, Memory: 1815.87 MB
+Before Retrieval 2 - CPU: 0.00%, CPU Time: 396.45s, Memory: 1815.87 MB
+After Retrieval 2 - CPU: 0.00%, CPU Time: 396.45s, Memory: 1815.87 MB
+Before Retrieval 3 - CPU: 0.00%, CPU Time: 396.49s, Memory: 1815.87 MB
+After Retrieval 3 - CPU: 0.00%, CPU Time: 396.49s, Memory: 1815.87 MB
+Before Retrieval 4 - CPU: 0.00%, CPU Time: 396.53s, Memory: 1815.87 MB
+After Retrieval 4 - CPU: 1.00%, CPU Time: 396.54s, Memory: 1815.87 MB
+2025-04-30 00:03:14,244 - INFO - 
+=== Retrieval Performance Summary ===
+2025-04-30 00:03:14,244 - INFO - Database Size: 404.99 MB (7482 documents)
+2025-04-30 00:03:14,244 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-04-30 00:03:14,244 - INFO - Average Precision: 48.40% (4124/8520 docs)
+2025-04-30 00:03:14,244 - INFO - Average Latency: 0.0510 seconds/query
+2025-04-30 00:03:14,244 - INFO - Throughput: 19.56 queries/second (with 1 workers)
+Evaluation - Duration: 145.18s, CPU Time Delta: 113.08s, CPU: 0.00%, Memory: 1794.80 MB
+
+=== Summary for Model: meta-llama/Meta-Llama-3.1-8B ===
+Model Specs:
+  Parameters: 8,000,000,000 (~8000M)
+  Embedding Size: 4096
+Embedding Time (s): 374.59
+Latency (s/query): 0.0510
+Throughput (q/s): 19.56
+Precision (%): 48.40
+Database Size (MB): 404.99

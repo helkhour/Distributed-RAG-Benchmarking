@@ -42,6 +42,7 @@ def summarize_results(model_name, embedding_time, sequential_metrics):
     print(f"Latency (s/query): {sequential_metrics['avg_latency']:.4f}")
     print(f"Throughput (q/s): {sequential_metrics['throughput']:.2f}")
     print(f"Precision (%): {sequential_metrics['avg_precision'] * 100:.2f}")
+    print(f"Database Size (MB): {sequential_metrics['db_size_mb']:.2f}")
 
 def main():
     print("Starting RAG evaluation...")

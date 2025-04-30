@@ -80,11 +80,12 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
             "source": "test"
         } for text, embedding in zip(texts, embeddings)])
         torch.cuda.empty_cache()
-    
-    logger.info(f"Embedding Generation Duration: {evaluator.get_current_duration():.2f}s")
+
+    evaluator.end_monitoring("Embedding Generation")
+    embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding and Storage")
+    logger.info(f"Embedding and Storage Duration: {embedding_duration:.2f}s")    
     logger.info("Inserting documents into MongoDB")
     collection.insert_many(docs, ordered=False)
-    logger.info(f"Storage Duration: {evaluator.get_current_duration():.2f}s")
     embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding and Storage")
     
     logger.info("Setting up vector index")

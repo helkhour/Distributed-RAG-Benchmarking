@@ -8,17 +8,6 @@ set -o pipefail
 sudo apt-get update
 sudo apt-get install -y gnupg curl ca-certificates python3-venv python3-dev build-essential
 
-######################################
-#  NVIDIA Drivers and CUDA
-######################################
-
-# Remove old NVIDIA drivers if any
-sudo apt-get purge -y nvidia-* cuda-* nvidia-cuda*
-
-# Install NVIDIA drivers
-sudo apt-get install -y ubuntu-drivers-common
-sudo ubuntu-drivers autoinstall
-sudo apt-get install -y nvidia-driver-535 nvidia-utils-535 nvidia-dkms-535
 
 # Install CUDA Toolkit 12.2
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
@@ -36,7 +25,6 @@ fi
 ######################################
 # Docker and Atlas Installation
 ######################################
-
 
 
 # MongoDB Atlas CLI

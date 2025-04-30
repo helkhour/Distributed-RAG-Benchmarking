@@ -16,7 +16,7 @@ class EmbeddingGenerator(nn.Module):
             base_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
             self.tokenizer = AutoTokenizer.from_pretrained(
                 base_model,
-                cache_dir="~/rag_project/llama-3.1-8b",
+                cache_dir="/home/ubuntu/rag_project/llama-3.1-8b",
                 token=True
             )
             # Set pad_token to eos_token
