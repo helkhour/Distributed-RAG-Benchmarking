@@ -10,21 +10,8 @@ sudo apt-get install -y gnupg curl ca-certificates python3-venv python3-dev buil
 
 
 # Install CUDA Toolkit 12.2
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
-sudo apt-get update
+
 sudo apt-get install -y cuda-toolkit-12-2
-
-# Add CUDA to PATH
-if ! grep -q '/usr/local/cuda-12.2/bin' ~/.bashrc; then
-  echo 'export PATH=/usr/local/cuda-12.2/bin:$PATH' >> ~/.bashrc
-  echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.2/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
-fi
-
-
-######################################
-# Docker and Atlas Installation
-######################################
 
 
 # MongoDB Atlas CLI
@@ -78,13 +65,9 @@ fi
 # Install Hugging Face CLI and requirements
 pip install huggingface_hub[cli]
 pip install -r requirements.txt
-deactivate
 
-# Set up Hugging Face token
-mkdir -p ~/.huggingface
-echo "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" > ~/.huggingface/token
-chmod 600 ~/.huggingface/token
+huggingface-cli login  # use fine-grained token with read accesss +++ permissions
 
-# Clean up
-sudo apt-get autoremove -y
-sudo apt-get clean
+#atlas deployments setup --type local
+#atlas deployments connect 
+#change port in config.py

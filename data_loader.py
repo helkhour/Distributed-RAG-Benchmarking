@@ -37,14 +37,16 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     logger.info(f"PubMedQA Test Split Size: {pubmedqa_doc_count} docs, {pubmedqa_mb:.2f} MB")
     logger.info(f"Combined Dataset Size: {total_doc_count} docs, {total_mb:.2f} MB")
     
-    # Collect unique documents
-    doc_to_questions = {}
+    all_docs = []
     for entry in combined_dataset:
         for doc in entry["documents"]:
-            doc_to_questions.setdefault(doc, []).append(entry["id"])
-    unique_docs = list(doc_to_questions.keys())
-    logger.info(f"Unique Documents: {len(unique_docs)}")
-    
+            all_docs.append({
+                "text": doc,
+                "question_ids": [entry["id"]],
+                "source": "test"
+            })
+    logger.info(f"Total Documents to Embed: {len(all_docs)}")
+        
     # Validate dataset structure
     for i, entry in enumerate(combined_dataset):
         if "documents" not in entry or not isinstance(entry["documents"], list):
@@ -54,39 +56,40 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     collection = get_db_connection()
     collection.delete_many({})
     
+    evaluator.start_monitoring()
+
     # Batch processing
     batch_size = 8
     docs = []
     texts = []
-    evaluator.start_monitoring()
-    for doc in tqdm(unique_docs, desc="Generating embeddings"):
-        texts.append(doc)
+    batch_size = 8
+    for item in tqdm(all_docs, desc="Generating embeddings"):
+        texts.append(item["text"])
         if len(texts) >= batch_size:
             embeddings = embedding_generator.generate_embedding(texts)
-            docs.extend([{
-                "text": text,
-                "embedding": embedding,
-                "question_ids": doc_to_questions[text],  # Store all question IDs
-                "source": "test"
-            } for text, embedding in zip(texts, embeddings)])
+            for i, embedding in enumerate(embeddings):
+                docs.append({
+                    "text": texts[i],
+                    "embedding": embedding,
+                    "question_ids": item["question_ids"],
+                    "source": item["source"]
+                })
             texts = []
             torch.cuda.empty_cache()
     if texts:
         embeddings = embedding_generator.generate_embedding(texts)
-        docs.extend([{
-            "text": text,
-            "embedding": embedding,
-            "question_ids": doc_to_questions[text],
-            "source": "test"
-        } for text, embedding in zip(texts, embeddings)])
-        torch.cuda.empty_cache()
+        for i, embedding in enumerate(embeddings):
+            docs.append({
+                "text": texts[i],
+                "embedding": embedding,
+                "question_ids": item["question_ids"],
+                "source": item["source"]
+            })
 
-    evaluator.end_monitoring("Embedding Generation")
     embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding and Storage")
     logger.info(f"Embedding and Storage Duration: {embedding_duration:.2f}s")    
     logger.info("Inserting documents into MongoDB")
     collection.insert_many(docs, ordered=False)
-    embedding_duration, embedding_cpu_delta = evaluator.end_monitoring("Embedding and Storage")
     
     logger.info("Setting up vector index")
     setup_vector_index(collection, embedding_size)

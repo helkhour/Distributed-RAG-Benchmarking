@@ -1,0 +1,35 @@
+Starting RAG evaluation...
+
+=== Evaluating Model: meta-llama/Meta-Llama-3.1-8B ===
+Before Data Load - CPU: 0.00%, CPU Time: 4.29s, Memory: 683.93 MB
+Set pad_token to eos_token: <|eot_id|>
+/home/ubuntu/rag_project/venv/lib/python3.10/site-packages/torch/cuda/__init__.py:789: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+Loading checkpoint shards: 100%|██████████| 4/4 [00:52<00:00, 13.12s/it]
+Before Dataset Load - CPU: 0.00%, CPU Time: 11.16s, Memory: 773.32 MB
+2025-04-30 13:22:58,958 - INFO - HotpotQA Test Split Size: 1557 docs, 0.73 MB
+2025-04-30 13:22:58,958 - INFO - PubMedQA Test Split Size: 12250 docs, 4.31 MB
+2025-04-30 13:22:58,958 - INFO - Combined Dataset Size: 13807 docs, 5.04 MB
+2025-04-30 13:23:00,070 - INFO - Total Documents to Embed: 13807
+Dataset Load - Duration: 4.35s, CPU Time Delta: 4.32s, CPU: 0.00%, Memory: 808.95 MB
+Connected to MongoDB successfully!
+Generating embeddings: 100%|██████████| 13807/13807 [11:05<00:00, 20.76it/s]
+Embedding and Storage - Duration: 665.34s, CPU Time Delta: 668.83s, CPU: 0.00%, Memory: 3535.84 MB
+2025-04-30 13:34:08,527 - INFO - Embedding and Storage Duration: 665.34s
+2025-04-30 13:34:08,528 - INFO - Inserting documents into MongoDB
+2025-04-30 13:34:21,521 - INFO - Setting up vector index
+Existing 'vector_index' dropped.
+Waiting for vector index to be ready...
+Error setting up vector index: Vector index creation timed out.
+Traceback (most recent call last):
+  File "/home/ubuntu/rag_project/main.py", line 59, in <module>
+    main()
+  File "/home/ubuntu/rag_project/main.py", line 55, in main
+    embedding_time, sequential_metrics = run_study(model_name, embedding_size)
+  File "/home/ubuntu/rag_project/main.py", line 15, in run_study
+    collection, dataset, embedding_storage_time = load_and_store_data(
+  File "/home/ubuntu/rag_project/data_loader.py", line 95, in load_and_store_data
+    setup_vector_index(collection, embedding_size)
+  File "/home/ubuntu/rag_project/db_utils.py", line 58, in setup_vector_index
+    raise TimeoutError("Vector index creation timed out.")
+TimeoutError: Vector index creation timed out.
