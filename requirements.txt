@@ -2,3 +2,7 @@ pymongo
 sentence-transformers
 datasets
 psutil
+
+bitandbytes
+accelerate
+triton
