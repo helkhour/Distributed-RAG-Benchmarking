@@ -41,6 +41,9 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     timings["dataset_load"] = time.time() - start_time
     logger.info(f"Dataset Loading Duration: {timings['dataset_load']:.2f}s")
     
+    logger.debug(f"Sample HotpotQA Entry: {hotpotqa_dataset[0]}")
+    logger.debug(f"Sample PubMedQA Entry: {pubmedqa_dataset[0]}")
+    
     evaluator.start_monitoring()
     hotpotqa_doc_count, hotpotqa_mb = compute_doc_stats(hotpotqa_dataset)
     pubmedqa_doc_count, pubmedqa_mb = compute_doc_stats(pubmedqa_dataset)
@@ -73,7 +76,9 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     all_docs = []
     for entry in combined_dataset:
         for doc in entry["documents"]:
+            logger.debug(f"Original Doc: {doc}")
             embedding, _ = embedding_generator.generate_embedding([doc])
+            logger.debug(f"Stored Doc: {doc}")
             embedding = embedding[0]  # flatten
             all_docs.append({
                 "text": doc,

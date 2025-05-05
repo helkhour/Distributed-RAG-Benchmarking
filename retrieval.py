@@ -40,5 +40,7 @@ def retrieve_top_k(query_embedding, collection, num_candidates=100):
     if log_counter < LOG_LIMIT:
         evaluator.log_resources(f"After Retrieval {log_counter + 1}")
         log_counter += 1
+
+    
     
     return results_list, {"vector_search": search_duration}
