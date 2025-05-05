@@ -89,7 +89,8 @@ class EmbeddingGenerator(nn.Module):
                     print(f"Query Preprocessing Duration: {preprocess_duration:.4f}s")
                     print(f"Query Encoding Duration: {encoding_duration:.4f}s")
                 
-                return embeddings[0] if len(texts) == 1 else embeddings, timings
+                return embeddings, timings
+
             except Exception as e:
                 print(f"Error generating embedding: {e}")
                 raise

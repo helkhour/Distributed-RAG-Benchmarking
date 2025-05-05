@@ -13,6 +13,7 @@ def process_query(entry, collection, embedding_generator, num_candidates):
     query = entry["question"]
     start_time = time.time()
     query_embedding, embed_timings = embedding_generator.generate_embedding(query)
+    query_embedding = query_embedding[0]
     results, search_timings = retrieve_top_k(query_embedding, collection, num_candidates)
     latency = time.time() - start_time
 
