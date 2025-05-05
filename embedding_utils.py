@@ -57,18 +57,19 @@ class EmbeddingGenerator(nn.Module):
     def generate_embedding(self, texts):
         """Generate embeddings for a list of texts with timing."""
         timings = {"query_preprocessing": 0.0, "query_encoding": 0.0}
-        
+
+        # Ensure input is a list
+        if isinstance(texts, str):
+            texts = [texts]
+
         if "Llama-3.1" in self.model_name:
             try:
-                if isinstance(texts, str):
-                    texts = [texts]
-                
                 # Time preprocessing (tokenization)
                 start_time = time.time()
                 inputs = self.tokenizer(texts, return_tensors="pt", padding=True, truncation=True).to(self.device)
                 preprocess_duration = time.time() - start_time
                 timings["query_preprocessing"] = preprocess_duration
-                
+
                 # Time encoding
                 start_time = time.time()
                 with torch.no_grad():
@@ -81,31 +82,31 @@ class EmbeddingGenerator(nn.Module):
                 embeddings = self.projection(embeddings)
                 encoding_duration = time.time() - start_time
                 timings["query_encoding"] = encoding_duration
-                
-                embeddings = embeddings.cpu().tolist()                
+
+                embeddings = embeddings.cpu().tolist()  # always return list of vectors    
                 return embeddings, timings
 
             except Exception as e:
                 print(f"Error generating embedding: {e}")
                 raise
+
         else:
+            # Time encoding (includes preprocessing)
             start_time = time.time()
             embedding = self.model.encode(texts, convert_to_tensor=True, batch_size=32)
             encoding_duration = time.time() - start_time
             timings["query_encoding"] = encoding_duration
-            
+
             if embedding.dim() == 1:
                 embedding = embedding.unsqueeze(0)
+
             if hasattr(self, "output_size"):
                 embedding = embedding[:, :self.output_size]
             elif hasattr(self, "projection"):
                 if embedding.dtype != self.projection.weight.dtype:
                     embedding = embedding.to(dtype=self.projection.weight.dtype)
                 embedding = self.projection(embedding)
+
             embedding = embedding.cpu().tolist()
-            
-            # Log durations for queries
-            if len(texts) == 1:
-                print(f"Query Encoding Duration: {encoding_duration:.4f}s (includes preprocessing)")
-            
-            return embedding[0] if len(texts) == 1 else embedding, timings
+
+            return embedding, timings  # always return list of vectors

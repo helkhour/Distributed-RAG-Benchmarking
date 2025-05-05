@@ -36,7 +36,6 @@ def retrieve_top_k(query_embedding, collection, num_candidates=100):
     ])
     results_list = list(results)
     search_duration = time.time() - start_time
-    print(f"Vector Similarity Search Duration: {search_duration:.4f}s (num_candidates={num_candidates})")
     
     if log_counter < LOG_LIMIT:
         evaluator.log_resources(f"After Retrieval {log_counter + 1}")
