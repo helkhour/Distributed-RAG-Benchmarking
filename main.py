@@ -103,13 +103,13 @@ def summarize_results(model_name, timings):
     print(f"{'HotpotQA Documents':<40} {data_stats['hotpotqa_docs']:<20}")
     print(f"{'PubMedQA Documents':<40} {data_stats['pubmedqa_docs']:<20}")
     print(f"{'Total Documents':<40} {data_stats['total_docs']:<20}")
-    print(f"{'HotpotQA Size (MB)':<40} {data_stats['hotpotqa_size_mb']:.2f:<20}")
-    print(f"{'PubMedQA Size (MB)':<40} {data_stats['pubmedqa_size_mb']:.2f:<20}")
-    print(f"{'Total Dataset Size (MB)':<40} {data_stats['total_size_mb']:.2f:<20}")
+    print(f"{'HotpotQA Size (MB)':<40} {data_stats['hotpotqa_size_mb']:<20.2f}")
+    print(f"{'PubMedQA Size (MB)':<40} {data_stats['pubmedqa_size_mb']:<20.2f}")
+    print(f"{'Total Dataset Size (MB)':<40} {data_stats['total_size_mb']:<20.2f}")
     print(f"{'Documents Stored (Sequential)':<40} {data_stats['docs_stored_sequential']:<20}")
     print(f"{'Documents Stored (Batch)':<40} {data_stats['docs_stored_batch']:<20}")
     print(f"{'Database Entries':<40} {data_stats['db_entries']:<20}")
-    print(f"{'Database Size (MB)':<40} {metrics_30['db_size_mb']:.2f:<20}")
+    print(f"{'Database Size (MB)':<40} {metrics_30['db_size_mb']:<20.2f}")
     print(f"{'Total Queries Evaluated':<40} {metrics_30['total_queries']:<20}")
     
     print(f"\nTiming Breakdown (Total Time: {total_time:.2f}s):")
@@ -137,9 +137,9 @@ def main():
     print("Starting RAG evaluation...")
     models = [
         "meta-llama/Meta-Llama-3.1-8B",
-        # "mixedbread-ai/mxbai-embed-large-v1-256",
-        # "mixedbread-ai/mxbai-embed-large-v1-512",
-        # "mixedbread-ai/mxbai-embed-large-v1-1024",
+        "mixedbread-ai/mxbai-embed-large-v1-256",
+        "mixedbread-ai/mxbai-embed-large-v1-512",
+        "mixedbread-ai/mxbai-embed-large-v1-1024",
         "sentence-transformers/all-MiniLM-L6-v2",
         "intfloat/e5-small-v2",
         "thenlper/gte-base-384",

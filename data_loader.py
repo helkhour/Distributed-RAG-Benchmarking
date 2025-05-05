@@ -34,7 +34,9 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     # Time dataset loading
     start_time = time.time()
     split = "test" if limit is None else f"test[:{limit}]"
+    logger.info(f"Loading HotpotQA dataset with split: {split}")
     hotpotqa_dataset = load_dataset(DATASET_NAME, name=SUBSET_NAME, split=split)
+    logger.info(f"Loading PubMedQA dataset with split: {split}")
     pubmedqa_dataset = load_dataset(DATASET_NAME, name="pubmedqa", split=split)
     timings["dataset_load"] = time.time() - start_time
     logger.info(f"Dataset Loading Duration: {timings['dataset_load']:.2f}s")
@@ -61,6 +63,10 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     logger.info(f"HotpotQA Test Split: {stats['hotpotqa_entries']} entries, {hotpotqa_doc_count} docs, {hotpotqa_mb:.2f} MB")
     logger.info(f"PubMedQA Test Split: {stats['pubmedqa_entries']} entries, {pubmedqa_doc_count} docs, {pubmedqa_mb:.2f} MB")
     logger.info(f"Combined Dataset: {stats['total_entries']} entries, {total_doc_count} docs, {total_mb:.2f} MB")
+    
+    # Warn if dataset is small
+    if stats["total_entries"] < 100:
+        logger.warning(f"Dataset size is very small ({stats['total_entries']} entries). Ensure 'limit' is None or dataset split is correct.")
     
     # Time document preparation
     start_time = time.time()
