@@ -73,8 +73,11 @@ def load_and_store_data(limit=None, embedding_generator=None, embedding_size=Non
     all_docs = []
     for entry in combined_dataset:
         for doc in entry["documents"]:
+            embedding, _ = embedding_generator.generate_embedding([doc])
+            embedding = embedding[0]  # flatten
             all_docs.append({
                 "text": doc,
+                "embedding": embedding,
                 "question_ids": [entry["id"]],
                 "source": "test"
             })

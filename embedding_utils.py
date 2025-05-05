@@ -82,20 +82,13 @@ class EmbeddingGenerator(nn.Module):
                 encoding_duration = time.time() - start_time
                 timings["query_encoding"] = encoding_duration
                 
-                embeddings = embeddings.cpu().tolist()
-                
-                # Log durations for queries
-                if len(texts) == 1:
-                    print(f"Query Preprocessing Duration: {preprocess_duration:.4f}s")
-                    print(f"Query Encoding Duration: {encoding_duration:.4f}s")
-                
+                embeddings = embeddings.cpu().tolist()                
                 return embeddings, timings
 
             except Exception as e:
                 print(f"Error generating embedding: {e}")
                 raise
         else:
-            # Time encoding (includes preprocessing)
             start_time = time.time()
             embedding = self.model.encode(texts, convert_to_tensor=True, batch_size=32)
             encoding_duration = time.time() - start_time
@@ -106,6 +99,8 @@ class EmbeddingGenerator(nn.Module):
             if hasattr(self, "output_size"):
                 embedding = embedding[:, :self.output_size]
             elif hasattr(self, "projection"):
+                if embedding.dtype != self.projection.weight.dtype:
+                    embedding = embedding.to(dtype=self.projection.weight.dtype)
                 embedding = self.projection(embedding)
             embedding = embedding.cpu().tolist()
             

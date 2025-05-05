@@ -19,7 +19,7 @@ def process_query(entry, collection, embedding_generator, num_candidates):
 
     relevant_docs = entry["documents"]
     retrieved_texts = [r["text"] for r in results]
-    relevant_count = sum(text in relevant_docs for text in retrieved_texts)
+    relevant_count = sum(any(retrieved.strip() == ref.strip() for ref in relevant_docs) for retrieved in retrieved_texts)
 
     logger.debug(f"Query: {query}, Latency: {latency:.4f}s, Relevant: {relevant_count}/{len(retrieved_texts)}")
     
