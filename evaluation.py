@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from config import DB_URI, DB_NAME
 from retrieval import retrieve_top_k
 import logging
+from difflib import SequenceMatcher
 
 def process_query(entry, collection, embedding_generator, num_candidates):
     """Process a single query and return metrics with timing."""
@@ -19,10 +20,15 @@ def process_query(entry, collection, embedding_generator, num_candidates):
 
     relevant_docs = entry["documents"]
     retrieved_texts = [r["text"] for r in results]
-    relevant_count = sum(any(retrieved.strip() == ref.strip() for ref in relevant_docs) for retrieved in retrieved_texts)
-
-    logger.debug(f"Query: {query}, Latency: {latency:.4f}s, Relevant: {relevant_count}/{len(retrieved_texts)}")
     
+    def is_similar(a, b, threshold=0.95):
+        return SequenceMatcher(None, a.lower().strip(), b.lower().strip()).ratio() > threshold
+    
+    relevant_count = sum(
+        any(is_similar(retrieved, ref) for ref in relevant_docs)
+        for retrieved in retrieved_texts
+    )
+        
     timings = {
         "query_preprocessing": embed_timings["query_preprocessing"],
         "query_encoding": embed_timings["query_encoding"],
@@ -59,7 +65,6 @@ def evaluate_retrieval_performance(dataset, collection, embedding_generator, max
     logger.info(f"Starting evaluation with {total_queries} queries, {max_workers} workers, {num_candidates} candidates")
     start_total_time = time.time()
     
-    # Time parallel processing
     start_overhead = time.time()
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         results = list(executor.map(

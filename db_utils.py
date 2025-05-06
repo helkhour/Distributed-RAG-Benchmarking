@@ -9,7 +9,7 @@ from config import DB_URI, DB_NAME, COLLECTION_NAME
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-def get_db_connection(max_retries=5, retry_delay=5, server_timeout_ms=10000):
+def get_db_connection(max_retries=5, retry_delay=5, server_timeout_ms=60000):
     """Establish and return a MongoDB collection connection with retries."""
     # Allow DB_URI override via environment variable
     db_uri = os.getenv("MONGO_DB_URI", DB_URI)
@@ -20,8 +20,8 @@ def get_db_connection(max_retries=5, retry_delay=5, server_timeout_ms=10000):
             client = MongoClient(
                 db_uri,
                 serverSelectionTimeoutMS=server_timeout_ms,
-                connectTimeoutMS=20000,
-                socketTimeoutMS=20000
+                connectTimeoutMS=60000,
+                socketTimeoutMS=60000
             )
             # Ping the server to verify connection
             client.admin.command('ping')

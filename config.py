@@ -51,7 +51,7 @@ MODEL_CONFIGS = {
     }
 }
 
-DB_URI = "mongodb://localhost:27017/?directConnection=true"
+DB_URI = "mongodb://localhost:32768/?directConnection=true"
 DB_NAME = "rag_db"
 COLLECTION_NAME = "hotpotqa_docs"
 K = 3

@@ -5,12 +5,8 @@ def clean_log_file(input_path, output_path):
         lines = infile.readlines()
 
     patterns_to_remove = [
-        r"^Vector Similarity Search Duration: 0\.",
-        r"^Batches:.*",
-        r"^Query Encoding Duration:.*",
-        r"^Sequential insertion:.*",
-        r"^Generating embeddings:.*"
-    ]
+        r"^Batches:\s+\d+%.*\[\d{2}:\d{2}<.*it/s\]?",    # tqdm-style Batches progress bars
+        ]
 
     with open(output_path, 'w') as outfile:
         for line in lines:
@@ -26,6 +22,6 @@ def clean_log_file(input_path, output_path):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "rag_log.log"            # Replace with your actual input file
-    output_file = "cleaned_log.txt"   # Output file
+    input_file = "output_rag_precision.log"            # Replace with your actual input file
+    output_file = "cleaned_output_rag_precision.txt"   # Output file
     clean_log_file(input_file, output_file)

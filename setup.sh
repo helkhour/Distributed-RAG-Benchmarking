@@ -64,6 +64,7 @@ fi
 # Install Hugging Face CLI and requirements
 pip install huggingface_hub[cli]
 pip install -r requirements.txt
+pip install --upgrade bitsandbytes
 
 huggingface-cli login  # use fine-grained token with read accesss +++ permissions
 
