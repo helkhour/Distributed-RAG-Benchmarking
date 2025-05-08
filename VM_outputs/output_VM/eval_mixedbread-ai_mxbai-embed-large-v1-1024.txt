@@ -1,0 +1,160 @@
+=== Evaluating Model: mixedbread-ai/mxbai-embed-large-v1-1024 ===
+2025-05-06 15:36:52,202 - INFO - Running sequential embedding mode
+2025-05-06 15:36:52,204 - INFO - Use pytorch device_name: cuda:0
+2025-05-06 15:36:52,204 - INFO - Load pretrained SentenceTransformer: mixedbread-ai/mxbai-embed-large-v1
+2025-05-06 15:36:54,265 - INFO - 2 prompts are loaded, with the keys: ['query', 'passage']
+2025-05-06 15:36:54,270 - INFO - Loading HotpotQA dataset with split: test
+2025-05-06 15:36:56,017 - INFO - Loading PubMedQA dataset with split: test
+2025-05-06 15:36:57,732 - INFO - Dataset Loading Duration: 3.46s
+2025-05-06 15:36:58,798 - INFO - HotpotQA Test Split: 390 entries, 1557 docs, 0.73 MB
+2025-05-06 15:36:58,798 - INFO - PubMedQA Test Split: 2450 entries, 12250 docs, 4.31 MB
+2025-05-06 15:36:58,798 - INFO - Combined Dataset: 2840 entries, 13807 docs, 5.04 MB
+2025-05-06 15:36:59,939 - INFO - Document Collection Duration: 1.14s
+2025-05-06 15:36:59,939 - INFO - Total Documents to Embed: 13807
+2025-05-06 15:36:59,939 - INFO - Using sequential embedding mode
+2025-05-06 15:40:52,967 - INFO - Sequential Embedding Duration: 233.03s
+2025-05-06 15:40:52,967 - INFO - Total Query Preprocessing: 0.00s
+2025-05-06 15:40:52,967 - INFO - Total Query Encoding: 228.94s
+2025-05-06 15:40:52,971 - INFO - Average Embedding Norm: 17.3352 ± 0.6315
+Embedding Generation - Duration: 233.03s, CPU Time Delta: 233.06s, CPU: 0.00%, Memory: 4428.05 MB
+2025-05-06 15:40:53,973 - INFO - Attempting to connect to MongoDB at mongodb://localhost:32768/?directConnection=true (Attempt 1/5)
+2025-05-06 15:40:53,978 - INFO - Connected to MongoDB successfully!
+2025-05-06 15:40:54,094 - INFO - Database Clearing Duration: 0.12s
+2025-05-06 15:40:54,094 - INFO - Inserting documents in batch into MongoDB
+2025-05-06 15:40:57,297 - INFO - Batch Document Storage Duration: 3.20s
+2025-05-06 15:40:57,297 - INFO - Setting up vector index
+2025-05-06 15:40:57,442 - INFO - Existing 'vector_index' dropped.
+2025-05-06 15:40:57,461 - INFO - Waiting for vector index to be ready...
+2025-05-06 15:41:07,878 - INFO - Vector index is now ready!
+2025-05-06 15:41:07,878 - INFO - Document Indexing Duration: 10.58s
+Embedding and Storage - Duration: 13.91s, CPU Time Delta: 1.32s, CPU: 0.00%, Memory: 4429.34 MB
+After Index Setup - CPU: 0.00%, CPU Time: 7727.36s, Memory: 4429.34 MB
+2025-05-06 15:41:09,889 - INFO - Stored 13807 documents in batch, 13807 entries in MongoDB.
+Data Load (sequential) - Duration: 255.75s, CPU Time Delta: 237.13s, CPU: 0.00%, Memory: 4100.23 MB
+2025-05-06 15:41:11,022 - INFO - 
+Running evaluation (30 candidates, sequential)...
+2025-05-06 15:41:11,022 - INFO - Starting evaluation with 2840 queries, 4 workers, 30 candidates
+=== Retrieval Performance Summary ===
+2025-05-06 15:43:50,492 - INFO - Database Size: 180.61 MB (13807 documents)
+2025-05-06 15:43:50,492 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-05-06 15:43:50,492 - INFO - Average Precision: 94.95% (8090/8520 docs)
+2025-05-06 15:43:50,492 - INFO - Average Latency: 0.2210 seconds/query
+2025-05-06 15:43:50,492 - INFO - Throughput: 17.81 queries/second (with 4 workers, 30 candidates)
+Evaluation (30 candidates, sequential) - Duration: 159.48s, CPU Time Delta: 232.40s, CPU: 1.00%, Memory: 4097.39 MB
+2025-05-06 15:43:51,501 - INFO - 
+Running evaluation (100 candidates, sequential)...
+2025-05-06 15:43:51,501 - INFO - Starting evaluation with 2840 queries, 4 workers, 100 candidates
+=== Retrieval Performance Summary ===
+2025-05-06 15:46:28,570 - INFO - Database Size: 180.61 MB (13807 documents)
+2025-05-06 15:46:28,570 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-05-06 15:46:28,570 - INFO - Average Precision: 95.62% (8147/8520 docs)
+2025-05-06 15:46:28,570 - INFO - Average Latency: 0.2177 seconds/query
+2025-05-06 15:46:28,570 - INFO - Throughput: 18.08 queries/second (with 4 workers, 100 candidates)
+Evaluation (100 candidates, sequential) - Duration: 157.08s, CPU Time Delta: 228.96s, CPU: 0.00%, Memory: 4096.39 MB
+2025-05-06 15:46:29,579 - INFO - Running batch embedding mode
+2025-05-06 15:46:29,581 - INFO - Use pytorch device_name: cuda:0
+2025-05-06 15:46:29,581 - INFO - Load pretrained SentenceTransformer: mixedbread-ai/mxbai-embed-large-v1
+2025-05-06 15:46:31,547 - INFO - 2 prompts are loaded, with the keys: ['query', 'passage']
+2025-05-06 15:46:31,552 - INFO - Loading HotpotQA dataset with split: test
+2025-05-06 15:46:33,697 - INFO - Loading PubMedQA dataset with split: test
+2025-05-06 15:46:35,161 - INFO - Dataset Loading Duration: 3.61s
+2025-05-06 15:46:36,203 - INFO - HotpotQA Test Split: 390 entries, 1557 docs, 0.73 MB
+2025-05-06 15:46:36,203 - INFO - PubMedQA Test Split: 2450 entries, 12250 docs, 4.31 MB
+2025-05-06 15:46:36,203 - INFO - Combined Dataset: 2840 entries, 13807 docs, 5.04 MB
+2025-05-06 15:46:37,321 - INFO - Document Collection Duration: 1.12s
+2025-05-06 15:46:37,321 - INFO - Total Documents to Embed: 13807
+2025-05-06 15:46:37,321 - INFO - Using batch embedding mode
+2025-05-06 15:48:38,112 - INFO - Batch Embedding Duration: 120.79s
+2025-05-06 15:48:38,112 - INFO - Total Query Preprocessing: 0.00s
+2025-05-06 15:48:38,112 - INFO - Total Query Encoding: 34.10s
+2025-05-06 15:48:38,114 - INFO - Average Embedding Norm: 17.3352 ± 0.6315
+Embedding Generation - Duration: 120.79s, CPU Time Delta: 124.59s, CPU: 0.00%, Memory: 4463.25 MB
+2025-05-06 15:48:39,115 - INFO - Attempting to connect to MongoDB at mongodb://localhost:32768/?directConnection=true (Attempt 1/5)
+2025-05-06 15:48:39,119 - INFO - Connected to MongoDB successfully!
+2025-05-06 15:48:39,259 - INFO - Database Clearing Duration: 0.14s
+2025-05-06 15:48:39,259 - INFO - Inserting documents in batch into MongoDB
+2025-05-06 15:48:43,248 - INFO - Batch Document Storage Duration: 3.99s
+2025-05-06 15:48:43,248 - INFO - Setting up vector index
+2025-05-06 15:48:55,321 - INFO - Existing 'vector_index' dropped.
+2025-05-06 15:48:55,347 - INFO - Waiting for vector index to be ready...
+2025-05-06 15:49:05,770 - INFO - Vector index is now ready!
+2025-05-06 15:49:05,770 - INFO - Document Indexing Duration: 22.52s
+Embedding and Storage - Duration: 26.66s, CPU Time Delta: 1.49s, CPU: 0.00%, Memory: 4480.29 MB
+After Index Setup - CPU: 0.00%, CPU Time: 8318.10s, Memory: 4480.29 MB
+2025-05-06 15:49:07,783 - INFO - Stored 13807 documents in batch, 13807 entries in MongoDB.
+Data Load (batch) - Duration: 156.36s, CPU Time Delta: 128.65s, CPU: 0.00%, Memory: 4138.22 MB
+2025-05-06 15:49:08,917 - INFO - 
+Running evaluation (30 candidates, batch)...
+2025-05-06 15:49:08,917 - INFO - Starting evaluation with 2840 queries, 4 workers, 30 candidates
+2025-05-06 15:51:47,709 - INFO - 
+=== Retrieval Performance Summary ===
+2025-05-06 15:51:47,709 - INFO - Database Size: 180.61 MB (13807 documents)
+2025-05-06 15:51:47,709 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-05-06 15:51:47,709 - INFO - Average Precision: 94.84% (8080/8520 docs)
+2025-05-06 15:51:47,709 - INFO - Average Latency: 0.2201 seconds/query
+2025-05-06 15:51:47,709 - INFO - Throughput: 17.89 queries/second (with 4 workers, 30 candidates)
+Evaluation (30 candidates, batch) - Duration: 158.80s, CPU Time Delta: 231.73s, CPU: 0.00%, Memory: 4006.41 MB
+2025-05-06 15:51:48,718 - INFO - 
+Running evaluation (100 candidates, batch)...
+2025-05-06 15:51:48,719 - INFO - Starting evaluation with 2840 queries, 4 workers, 100 candidates
+2025-05-06 15:54:25,751 - INFO - 
+=== Retrieval Performance Summary ===
+2025-05-06 15:54:25,751 - INFO - Database Size: 180.61 MB (13807 documents)
+2025-05-06 15:54:25,751 - INFO - Retrieval Success: 100.00% (2840/2840 queries)
+2025-05-06 15:54:25,751 - INFO - Average Precision: 95.54% (8140/8520 docs)
+2025-05-06 15:54:25,751 - INFO - Average Latency: 0.2176 seconds/query
+2025-05-06 15:54:25,751 - INFO - Throughput: 18.09 queries/second (with 4 workers, 100 candidates)
+Evaluation (100 candidates, batch) - Duration: 157.04s, CPU Time Delta: 228.69s, CPU: 0.00%, Memory: 4003.43 MB
+2025-05-06 15:54:26,761 - INFO - 
+=== Summary for Model: mixedbread-ai/mxbai-embed-large-v1-1024 (Sequential Embedding) ===
+2025-05-06 15:54:26,762 - INFO - Model Specs:
+2025-05-06 15:54:26,762 - INFO -   Parameters: 335,000,000 (~335M)
+2025-05-06 15:54:26,762 - INFO -   Embedding Size: 1024
+2025-05-06 15:54:26,762 - INFO - 
+Dataset and Database Statistics:
+2025-05-06 15:54:26,762 - INFO - Metric                                   Value               
+2025-05-06 15:54:26,762 - INFO - ------------------------------------------------------------
+2025-05-06 15:54:26,762 - INFO - HotpotQA Entries                         390                 
+2025-05-06 15:54:26,762 - INFO - PubMedQA Entries                         2450                
+2025-05-06 15:54:26,762 - INFO - Total Dataset Entries                    2840                
+2025-05-06 15:54:26,762 - INFO - HotpotQA Documents                       1557                
+2025-05-06 15:54:26,762 - INFO - PubMedQA Documents                       12250               
+2025-05-06 15:54:26,762 - INFO - Total Documents                          13807               
+2025-05-06 15:54:26,762 - INFO - HotpotQA Size (MB)                       0.73                
+2025-05-06 15:54:26,762 - INFO - PubMedQA Size (MB)                       4.31                
+2025-05-06 15:54:26,762 - INFO - Total Dataset Size (MB)                  5.04                
+2025-05-06 15:54:26,762 - INFO - Documents Stored (Batch)                 13807               
+2025-05-06 15:54:26,762 - INFO - Database Entries                         13807               
+2025-05-06 15:54:26,762 - INFO - Database Size (MB)                       180.61              
+2025-05-06 15:54:26,762 - INFO - Total Queries Evaluated                  2840                
+2025-05-06 15:54:26,762 - INFO - Embedding Mode                           sequential          
+2025-05-06 15:54:26,762 - INFO - 
+Timing Breakdown (Total Time: 2039.13s):
+2025-05-06 15:54:26,762 - INFO - Process                                  Time (s)     Proportion (%) 
+2025-05-06 15:54:26,762 - INFO - -------------------------------------------------------------------
+2025-05-06 15:54:26,762 - INFO - Database Connection                      0.01         0.00           
+2025-05-06 15:54:26,762 - INFO - Dataset Loading                          3.46         0.17           
+2025-05-06 15:54:26,762 - INFO - Document Collection                      1.14         0.06           
+2025-05-06 15:54:26,762 - INFO - Database Clearing                        0.12         0.01           
+2025-05-06 15:54:26,762 - INFO - Sequential Embedding                     233.03       11.43          
+2025-05-06 15:54:26,762 - INFO - Embedding Generation (Document)          233.03       11.43          
+2025-05-06 15:54:26,762 - INFO - Batch Document Storage                   3.20         0.16           
+2025-05-06 15:54:26,762 - INFO - Document Indexing                        10.58        0.52           
+2025-05-06 15:54:26,762 - INFO - Query Preprocessing (30 candidates)      0.00         0.00           
+2025-05-06 15:54:26,762 - INFO - Query Encoding (30 candidates)           609.15       29.87          
+2025-05-06 15:54:26,762 - INFO - Vector Similarity Search (30 candidates) 14.60        0.72           
+2025-05-06 15:54:26,762 - INFO - Evaluation Overhead (30 candidates)      159.45       7.82           
+2025-05-06 15:54:26,762 - INFO - Query Preprocessing (100 candidates)     0.00         0.00           
+2025-05-06 15:54:26,762 - INFO - Query Encoding (100 candidates)          592.08       29.04          
+2025-05-06 15:54:26,762 - INFO - Vector Similarity Search (100 candidates) 22.22        1.09           
+2025-05-06 15:54:26,762 - INFO - Evaluation Overhead (100 candidates)     157.05       7.70           
+2025-05-06 15:54:26,762 - INFO - 
+Evaluation Metrics (30 candidates):
+2025-05-06 15:54:26,762 - INFO -   Latency (s/query): 0.2210
+2025-05-06 15:54:26,762 - INFO -   Throughput (q/s): 17.81
+2025-05-06 15:54:26,762 - INFO -   Precision (%): 94.95
+2025-05-06 15:54:26,762 - INFO - 
+Evaluation Metrics (100 candidates):
+2025-05-06 15:54:26,762 - INFO -   Latency (s/query): 0.2177
+2025-05-06 15:54:26,762 - INFO -   Throughput (q/s): 18.08
+2025-05-06 15:54:26,762 - INFO -   Precision (%): 95.62

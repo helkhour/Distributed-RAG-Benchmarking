@@ -140,16 +140,16 @@ def main():
     logger = logging.getLogger(__name__)
     logger.info("Starting RAG evaluation...")
     models = [
-        "meta-llama/Meta-Llama-3.1-8B",
-        "mixedbread-ai/mxbai-embed-large-v1-256",
+        "meta-llama/Meta-Llama-3.1-8B", ok
+        "mixedbread-ai/mxbai-embed-large-v1-256", ok
         "mixedbread-ai/mxbai-embed-large-v1-512",
-        "mixedbread-ai/mxbai-embed-large-v1-1024",
-        "sentence-transformers/all-MiniLM-L6-v2",
-        "intfloat/e5-small-v2",
-        "thenlper/gte-base-384",
-        "sentence-transformers/all-mpnet-base-v2",
+        "mixedbread-ai/mxbai-embed-large-v1-1024", ok
+        "sentence-transformers/all-MiniLM-L6-v2", ok 
+        "intfloat/e5-small-v2", ok 
+        "thenlper/gte-base-384", no 
+        "sentence-transformers/all-mpnet-base-v2", ok
         "BAAI/bge-base-en-v1.5",
-        "thenlper/gte-base"
+        "thenlper/gte-base"   ok 
     ]
 
     for model_name in models:
